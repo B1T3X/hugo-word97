@@ -3,6 +3,7 @@
 <head>
   {{- partial "head/meta.html" . }}
   {{- partial "head/assets.html" . }}
+  {{- partial "hooks/head-end.html" . }}
 </head>
 {{- $docTitle := partial "w97/doc-title.html" . }}
 <body class="kind-{{ .Kind }}{{ with .Section }} section-{{ . }}{{ end }}">
@@ -56,5 +57,6 @@
     | resources.Concat "js/word97.js" }}
   {{- if not hugo.IsServer }}{{ $js = $js | minify | fingerprint }}{{ end }}
   <script src="{{ $js.RelPermalink }}"{{ with $js.Data.Integrity }} integrity="{{ . }}"{{ end }} defer></script>
+  {{- partial "hooks/body-end.html" . }}
 </body>
 </html>

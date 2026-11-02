@@ -1,6 +1,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ site.Title }} - {{ .Title }}{{ end }}</title>
+{{- $pageTitle := cond .IsHome (.Title | default site.Title) (printf "%s - %s" site.Title .Title) }}
+<title>{{ $pageTitle }}</title>
 {{- $desc := "" }}
 {{- with .Description }}{{ $desc = . }}{{ else }}{{ if .IsPage }}{{ $desc = .Summary | plainify | strings.TrimSpace | truncate 160 }}{{ else }}{{ $desc = site.Params.description }}{{ end }}{{ end }}
 {{- with $desc }}
@@ -30,7 +31,7 @@
 {{- end }}
 
 {{- /* Open Graph */}}
-<meta property="og:title" content="{{ .Title | default site.Title }}">
+<meta property="og:title" content="{{ cond .IsHome (.Title | default site.Title) .Title }}">
 {{- with $desc }}
 <meta property="og:description" content="{{ . }}">
 {{- end }}
@@ -43,6 +44,9 @@
 {{- if not .Lastmod.IsZero }}
 <meta property="article:modified_time" content="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}">
 {{- end }}
+{{- range .Params.categories }}
+<meta property="article:section" content="{{ . }}">
+{{- end }}
 {{- range .Params.tags }}
 <meta property="article:tag" content="{{ . }}">
 {{- end }}
@@ -50,35 +54,49 @@
 
 {{- /* Cover image (page bundle resource) for social cards. */}}
 {{- $card := "summary" }}
+{{- $image := "" }}
 {{- with .Params.cover.image }}
   {{- with $.Resources.Get . }}
     {{- $thumb := .Process "resize 1200x webp q80" }}
 <meta property="og:image" content="{{ $thumb.Permalink }}">
 <meta property="og:image:width" content="{{ $thumb.Width }}">
 <meta property="og:image:height" content="{{ $thumb.Height }}">
+<meta property="og:image:alt" content="{{ $.Params.cover.alt | default $.Title }}">
 <meta name="twitter:image" content="{{ $thumb.Permalink }}">
-    {{- $card = "summary_large_image" }}
+<meta name="twitter:image:alt" content="{{ $.Params.cover.alt | default $.Title }}">
+    {{- $card = "summary_large_image" }}{{ $image = $thumb.Permalink }}
   {{- end }}
 {{- end }}
 <meta name="twitter:card" content="{{ $card }}">
-<meta name="twitter:title" content="{{ .Title | default site.Title }}">
+{{- with site.Params.twitter }}
+<meta name="twitter:site" content="@{{ strings.TrimPrefix "@" . }}">
+<meta name="twitter:creator" content="@{{ strings.TrimPrefix "@" . }}">
+{{- end }}
+<meta name="twitter:title" content="{{ cond .IsHome (.Title | default site.Title) .Title }}">
 {{- with $desc }}
 <meta name="twitter:description" content="{{ . }}">
 {{- end }}
 
 {{- if .IsPage }}
-<script type="application/ld+json">
+{{- $isPost := in (partial "w97/sections.html" .) .Section }}
+{{- $sameAs := slice }}{{ range site.Params.social }}{{ $sameAs = $sameAs | append .url }}{{ end }}
+{{- $author := dict "@type" "Person" "name" (partial "w97/author.html" .) "url" site.Home.Permalink }}
+{{- with $sameAs }}{{ $author = merge $author (dict "sameAs" .) }}{{ end }}
 {{- $ld := dict
     "@context" "https://schema.org"
-    "@type" (cond (in (partial "w97/sections.html" .) .Section) "BlogPosting" "WebPage")
+    "@type" (cond $isPost "BlogPosting" "WebPage")
     "headline" .Title
     "url" .Permalink
-    "author" (dict "@type" "Person" "name" (partial "w97/author.html" .))
+    "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
+    "author" $author
 }}
+{{- if $isPost }}{{ $ld = merge $ld (dict "publisher" (dict "@type" "Person" "name" (partial "w97/author.html" site.Home))) }}{{ end }}
 {{- if not .Date.IsZero }}{{ $ld = merge $ld (dict "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00") "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")) }}{{ end }}
 {{- with $desc }}{{ $ld = merge $ld (dict "description" .) }}{{ end }}
-{{ $ld | jsonify | safeJS }}
-</script>
+{{- with $image }}{{ $ld = merge $ld (dict "image" .) }}{{ end }}
+{{- with .Params.categories }}{{ $ld = merge $ld (dict "articleSection" (delimit . ", ")) }}{{ end }}
+{{- with .Params.tags }}{{ $ld = merge $ld (dict "keywords" (delimit . ", ")) }}{{ end }}
+<script type="application/ld+json">{{ $ld | jsonify | safeJS }}</script>
 {{- end }}
 
 {{- partial "google_analytics.html" . }}

@@ -66,6 +66,7 @@ title = "Jane Doe"
 [params]
   description = "Notes, projects and other rabbit holes"   # tagline under the title
   author = "Jane Doe"                                       # or { name = "Jane Doe" }
+  twitter = "janedoe"                                       # twitter:site / twitter:creator
 
   [[params.social]]            # "Find Me Online!", the footer and Insert > Hyperlink
     name = "GitHub"
@@ -86,6 +87,7 @@ title = "Jane Doe"
     socialTitle = "Find Me Online!"
     latestTitle = "Latest Posts"
     latestStyle = "blue"
+    accessibilityOptions = true        # built-in a11y dialog; false if you use a third-party widget
     footerLinks = [{ name = "Privacy", url = "/privacy/" }]
 
     [params.word97.cookieNotice]       # off by default
@@ -161,6 +163,7 @@ In Markdown:
 
 ## Customizing
 
+- **Hooks:** add `layouts/_partials/hooks/head-end.html` (end of `<head>`, e.g. extra JSON-LD or meta tags) or `layouts/_partials/hooks/body-end.html` (before `</body>`, e.g. a third-party widget) to your site.
 - **Overrides:** copy any file from `layouts/` or `assets/` into the same path in your site.
 - **Colors:** the CSS custom properties at the top of `assets/css/base.css` (`--face`, `--title-a`, `--workspace`, `--page-w`, `--page-mx` and so on).
 - **Icons:** the 16-color pixel icons are ASCII art in `tools/icons.py`. Edit them, then run `python3 tools/icons.py` to regenerate `assets/icons/sprite.svg`.

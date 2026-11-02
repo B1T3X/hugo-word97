@@ -17,9 +17,11 @@
     </div>
   </div>
   <div class="statusbar__row">
+    {{- if ne site.Params.word97.accessibilityOptions false }}
     <button type="button" class="statusbar__a11y" data-action="a11y" aria-haspopup="dialog" aria-label="Accessibility options" data-tip="Accessibility Options">
       {{- partial "w97/icon.html" (dict "name" "a11y") -}}
     </button>
+    {{- end }}
     <button type="button" class="statusbar__dark" data-action="toggle" data-pref="dark" aria-pressed="false" data-tip="Switch between light and dark mode">
       {{- partial "w97/icon.html" (dict "name" "moon" "class" "ico-moon") -}}
       {{- partial "w97/icon.html" (dict "name" "sun" "class" "ico-sun") -}}

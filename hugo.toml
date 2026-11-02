@@ -24,6 +24,9 @@
   latestStyle = "blue"
   topics = []
   footerLinks = []
+  # Built-in Accessibility Options (status bar button + Tools menu). Set false if you
+  # use a third-party accessibility widget instead.
+  accessibilityOptions = true
   # Paperclip assistant: false = off until the visitor enables it from Help.
   assistantDefault = false
 
