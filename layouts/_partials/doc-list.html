@@ -15,7 +15,6 @@
     <li class="explorer__row">
       <article class="doc-entry">
         <h{{ $h }} class="doc-entry__title">
-          {{- partial "w97/icon.html" (dict "name" "word") -}}
           {{- if $.numbered }}<span class="doc-entry__num" aria-hidden="true"><u>{{ add $i 1 }}</u></span>{{ end -}}
           <a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a>
         </h{{ $h }}>

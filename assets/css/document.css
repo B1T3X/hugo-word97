@@ -170,14 +170,14 @@ html[data-view="online"] .ruler__paper { visibility: hidden; }
 .doc-entry__num { min-width: 1em; }
 .doc-entry__size, .doc-entry__date { padding: 0 6px; white-space: nowrap; font-size: 11px; color: var(--text); }
 .doc-entry__size { text-align: right; }
-.doc-entry__body { grid-column: 1 / -1; display: flex; gap: 10px; align-items: flex-start; margin: 4px 8px 0 28px; }
+.doc-entry__body { grid-column: 1 / -1; display: flex; gap: 10px; align-items: flex-start; margin: 4px 8px 0 6px; }
 .doc-entry__text { flex: 1; min-width: 0; }
 .doc-entry__summary, .doc-entry__tags { margin: 0; padding: 0; }
 .doc-entry__tags { margin-top: 3px; }
 .doc-entry__thumb { flex: none; display: block; padding: 2px; background: var(--face); box-shadow: var(--bevel-field); line-height: 0; }
 .doc-entry__thumb img { display: block; width: 120px; height: 75px; object-fit: cover; }
 .doc-entry__summary { color: var(--ink-soft); font-size: 11px; line-height: 1.4; }
-.explorer--mru .doc-entry__body { margin-left: 44px; }
+.explorer--mru .doc-entry__body { margin-left: 22px; }
 .doc-entry__tags { display: flex; flex-wrap: wrap; gap: 4px; padding: 0; list-style: none; font-size: 10px; }
 .doc-entry__tags a { display: inline-block; padding: 0 4px; background: var(--face); color: var(--text); text-decoration: none; box-shadow: var(--bevel-thin-up); }
 .doc-entry__tags a:hover { box-shadow: var(--bevel-thin-down); }

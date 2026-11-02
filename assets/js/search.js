@@ -31,14 +31,12 @@
     list.slice(0, 50).forEach(function (it) {
       var li = document.createElement('li'), a = document.createElement('a'), span = document.createElement('span'), meta = document.createElement('span');
       a.href = it.u;
-      a.innerHTML = '<svg class="ico" width="16" height="16" aria-hidden="true"><use href="' + spriteURL() + '#i-word"/></svg>';
       span.textContent = it.t;
       meta.className = 'find__hit-meta'; meta.textContent = (it.d || '') + (it.s ? ' - ' + it.s.slice(0, 90) + (it.s.length > 90 ? '...' : '') : '');
       span.appendChild(meta); a.appendChild(span); li.appendChild(a); results.appendChild(li);
     });
     results.hidden = !list.length;
   }
-  function spriteURL() { var u = document.querySelector('.ico use'); return u ? u.getAttribute('href').split('#')[0] : ''; }
   function wire(form, input, results, status) {
     if (!form) return;
     form.addEventListener('submit', function (e) {
