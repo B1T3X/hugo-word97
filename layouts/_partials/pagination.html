@@ -1,0 +1,22 @@
+{{- /* Wizard-style pager: < Back | Page x of y | Next > */ -}}
+{{- $pg := . -}}
+{{- if gt $pg.TotalPages 1 }}
+<nav class="pager" aria-label="Pagination">
+  {{- if $pg.HasPrev }}
+  <a class="btn" href="{{ $pg.Prev.URL }}" rel="prev">&lt; <u>B</u>ack</a>
+  {{- else }}
+  <span class="btn" aria-disabled="true">&lt; <u>B</u>ack</span>
+  {{- end }}
+  <ol class="pager__pages">
+    {{- range $pg.Pagers }}
+    <li>{{ if eq .PageNumber $pg.PageNumber }}<span class="btn btn--pressed" aria-current="page">{{ .PageNumber }}</span>{{ else }}<a class="btn" href="{{ .URL }}" aria-label="Page {{ .PageNumber }}">{{ .PageNumber }}</a>{{ end }}</li>
+    {{- end }}
+  </ol>
+  <span class="pager__label">Page {{ $pg.PageNumber }} of {{ $pg.TotalPages }}</span>
+  {{- if $pg.HasNext }}
+  <a class="btn" href="{{ $pg.Next.URL }}" rel="next"><u>N</u>ext &gt;</a>
+  {{- else }}
+  <span class="btn" aria-disabled="true"><u>N</u>ext &gt;</span>
+  {{- end }}
+</nav>
+{{- end }}

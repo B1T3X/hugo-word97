@@ -1,0 +1,24 @@
+{{- /*
+  WordArt in Markdown.
+
+    {{< wordart "Hello World" />}}
+    {{< wordart text="Free!" style="orange" level="2" />}}
+    {{< wordart style="burst" level="0" >}}Find Me Online!{{< /wordart >}}
+
+  Positional: 0 = text, 1 = style, 2 = level. Inner content wins over the text param.
+  Without inner content the shortcode must be self-closed (/>).
+*/ -}}
+{{- $text := "" -}}
+{{- $style := "blue" -}}
+{{- $level := 2 -}}
+{{- if .IsNamedParams -}}
+  {{- $text = .Get "text" | default "" -}}
+  {{- $style = .Get "style" | default "blue" -}}
+  {{- $level = .Get "level" | default 2 -}}
+{{- else -}}
+  {{- $text = .Get 0 | default "" -}}
+  {{- $style = .Get 1 | default "blue" -}}
+  {{- $level = .Get 2 | default 2 -}}
+{{- end -}}
+{{- with .Inner }}{{ $text = . | strings.TrimSpace }}{{ end -}}
+{{- partial "wordart.html" (dict "text" $text "style" $style "level" $level "class" (.Get "class") "id" (.Get "id")) -}}

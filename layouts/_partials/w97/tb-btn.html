@@ -1,0 +1,10 @@
+{{- /* dict: icon, label, action, href, disabled, pressed(pref), cls */ -}}
+{{- if and .href (not .disabled) -}}
+<a class="tb-btn{{ with .cls }} {{ . }}{{ end }}" href="{{ .href }}" aria-label="{{ .label }}" data-tip="{{ .label }}">{{ partial "w97/icon.html" (dict "name" .icon) }}</a>
+{{- else -}}
+<button type="button" class="tb-btn{{ with .cls }} {{ . }}{{ end }}" aria-label="{{ .label }}" data-tip="{{ .label }}"
+  {{- with .action }} data-action="{{ . }}"{{ end }}
+  {{- with .pref }} data-pref="{{ . }}" aria-pressed="false"{{ end }}
+  {{- with .value }} data-value="{{ . }}"{{ end }}
+  {{- if .disabled }} disabled{{ end }}>{{ partial "w97/icon.html" (dict "name" .icon) }}</button>
+{{- end -}}

@@ -1,0 +1,56 @@
+{{- /*
+  Explorer-style "details view" list of documents.
+  dict: pages, numbered (bool, File-menu style MRU numbering), heading (level for titles, default 2)
+*/ -}}
+{{- $h := .heading | default 2 -}}
+<div class="explorer{{ if .numbered }} explorer--mru{{ end }}">
+  <div class="explorer__head" aria-hidden="true">
+    <span class="explorer__col explorer__col--name">Name</span>
+    <span class="explorer__col explorer__col--size">Size</span>
+    <span class="explorer__col explorer__col--date">Modified</span>
+  </div>
+  <ol class="explorer__list">
+    {{- range $i, $p := .pages }}
+    {{- $summary := $p.Description | default ($p.Summary | plainify | strings.TrimSpace | truncate 220) }}
+    <li class="explorer__row">
+      <article class="doc-entry">
+        <h{{ $h }} class="doc-entry__title">
+          {{- partial "w97/icon.html" (dict "name" "word") -}}
+          {{- if $.numbered }}<span class="doc-entry__num" aria-hidden="true"><u>{{ add $i 1 }}</u></span>{{ end -}}
+          <a href="{{ $p.RelPermalink }}">{{ $p.Title }}<span class="doc-entry__ext" aria-hidden="true">.doc</span></a>
+        </h{{ $h }}>
+        <span class="doc-entry__size" title="Estimated reading time">{{ $p.ReadingTime }} min</span>
+        {{- if not $p.Date.IsZero }}
+        <time class="doc-entry__date" datetime="{{ $p.Date.Format "2006-01-02" }}">{{ $p.Date | time.Format ":date_medium" }}</time>
+        {{- end }}
+        {{- /* Cover thumbnail: page-bundle resource (resized) or a site-relative/static URL. */}}
+        {{- $thumb := "" }}{{ $tw := 0 }}{{ $th := 0 }}
+        {{- with $p.Params.cover.image }}
+          {{- if ne . "TODO" }}
+            {{- with $p.Resources.Get . }}
+              {{- if in (slice "jpeg" "png" "webp" "gif" "tiff" "bmp") .MediaType.SubType }}
+                {{- $img := .Process "fill 240x150 Center webp q75" }}{{ $thumb = $img.RelPermalink }}{{ $tw = 120 }}{{ $th = 75 }}
+              {{- end }}
+            {{- else }}
+              {{- if or (hasPrefix . "/") (hasPrefix . "http") }}{{ $thumb = . }}{{ $tw = 120 }}{{ $th = 75 }}{{ end }}
+            {{- end }}
+          {{- end }}
+        {{- end }}
+        <div class="doc-entry__body{{ if $thumb }} doc-entry__body--thumb{{ end }}">
+          {{- with $thumb }}
+          <a class="doc-entry__thumb" href="{{ $p.RelPermalink }}" tabindex="-1" aria-hidden="true"><img src="{{ . }}" width="{{ $tw }}" height="{{ $th }}" alt="" loading="lazy" decoding="async"></a>
+          {{- end }}
+          <div class="doc-entry__text">
+            {{- with $summary }}<p class="doc-entry__summary">{{ . }}</p>{{ end }}
+            {{- with $p.Params.tags }}
+            <ul class="doc-entry__tags" aria-label="Tags">
+              {{- range first 5 ($p.GetTerms "tags") }}<li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>{{ end }}
+            </ul>
+            {{- end }}
+          </div>
+        </div>
+      </article>
+    </li>
+    {{- end }}
+  </ol>
+</div>

@@ -1,0 +1,36 @@
+{{- /*
+  One dropdown menu entry.
+  dict keys: label (use & before the mnemonic letter), href, action, type ("check"|"radio"),
+             pref (state key read by JS), value, disabled, shortcut, sep, cls, newtab
+*/ -}}
+{{- if .sep -}}
+<li role="separator" class="menu__sep"></li>
+{{- else -}}
+{{- $label := .label -}}
+{{- $parts := split $label "&" -}}
+{{- $html := $label -}}
+{{- if gt (len $parts) 1 -}}
+  {{- $rest := delimit (after 1 $parts) "&" -}}
+  {{- $html = printf "%s<u>%s</u>%s" (index $parts 0 | htmlEscape) (substr $rest 0 1 | htmlEscape) (substr $rest 1 | htmlEscape) -}}
+{{- else -}}
+  {{- $html = $label | htmlEscape -}}
+{{- end -}}
+{{- $role := "menuitem" -}}
+{{- if eq .type "check" }}{{ $role = "menuitemcheckbox" }}{{ else if eq .type "radio" }}{{ $role = "menuitemradio" }}{{ end -}}
+<li role="none"{{ with .cls }} class="{{ . }}"{{ end }}>
+  {{- $attrs := printf `role="%s" tabindex="-1" class="menu__item"` $role -}}
+  {{- if .type }}{{ $attrs = printf `%s aria-checked="false"` $attrs }}{{ end -}}
+  {{- with .pref }}{{ $attrs = printf `%s data-pref="%s"` $attrs . }}{{ end -}}
+  {{- with .value }}{{ $attrs = printf `%s data-value="%s"` $attrs . }}{{ end -}}
+  {{- if .disabled }}{{ $attrs = printf `%s aria-disabled="true"` $attrs }}{{ end -}}
+  {{- if and .href (not .disabled) -}}
+  <a {{ $attrs | safeHTMLAttr }} href="{{ .href }}"{{ if .newtab }} target="_blank" rel="noopener"{{ end }}>
+  {{- else -}}
+  <button type="button" {{ $attrs | safeHTMLAttr }}{{ with .action }} data-action="{{ . }}"{{ end }}>
+  {{- end -}}
+    <span class="menu__check" aria-hidden="true"></span>
+    <span class="menu__label">{{ $html | safeHTML }}</span>
+    {{- with .shortcut }}<span class="menu__shortcut" aria-hidden="true">{{ . }}</span>{{ end -}}
+  {{- if and .href (not .disabled) }}</a>{{ else }}</button>{{ end -}}
+</li>
+{{- end -}}

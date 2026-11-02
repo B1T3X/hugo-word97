@@ -1,0 +1,17 @@
+{{- /* Site navigation from params.navlinks (falls back to menus.main). */ -}}
+{{- $links := slice -}}
+{{- with site.Params.navlinks -}}
+  {{- range . }}{{ $links = $links | append (dict "name" .name "url" (.url | relURL)) }}{{ end -}}
+{{- else -}}
+  {{- range site.Menus.main }}{{ $links = $links | append (dict "name" .Name "url" .URL) }}{{ end -}}
+{{- end -}}
+{{- $current := .RelPermalink -}}
+{{- with $links }}
+<nav class="site-nav" aria-label="Site">
+  <ul>
+    {{- range $i, $l := . }}
+    <li>{{ if $i }}<span class="site-nav__sep" aria-hidden="true">/</span> {{ end }}<a href="{{ $l.url }}"{{ if or (eq $l.url $current) (and (ne $l.url "/") (hasPrefix $current $l.url)) }} aria-current="page"{{ end }}>{{ $l.name }}</a></li>
+    {{- end }}
+  </ul>
+</nav>
+{{- end }}

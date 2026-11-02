@@ -1,0 +1,2 @@
+{{- $s := resources.Get "icons/sprite.svg" | minify | fingerprint "sha256" -}}
+{{- return $s.RelPermalink -}}

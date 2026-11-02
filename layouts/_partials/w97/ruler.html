@@ -1,0 +1,16 @@
+{{- /* Decorative horizontal ruler aligned with the document page. */ -}}
+<div class="ruler" aria-hidden="true">
+  <span class="ruler__tab" title="Left Tab"></span>
+  <div class="ruler__track">
+    <div class="ruler__paper">
+      <div class="ruler__text">
+        {{- range seq 1 7 }}
+        <span class="ruler__num" style="--n:{{ . }}">{{ . }}</span>
+        {{- end }}
+        <span class="ruler__indent ruler__indent--first"></span>
+        <span class="ruler__indent ruler__indent--hanging"></span>
+        <span class="ruler__indent ruler__indent--right"></span>
+      </div>
+    </div>
+  </div>
+</div>

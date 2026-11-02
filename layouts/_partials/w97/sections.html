@@ -1,0 +1,3 @@
+{{- /* Sections treated as posts: params.word97.mainSections, else Hugo's site.MainSections (the largest section), else "posts". */ -}}
+{{- $s := site.Params.word97.mainSections | default site.MainSections | default (slice "posts") -}}
+{{- return $s -}}

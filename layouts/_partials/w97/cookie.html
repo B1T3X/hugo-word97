@@ -1,0 +1,10 @@
+{{- with site.Params.word97.cookieNotice }}{{ $c := . }}{{ if .enable }}
+<section class="window cookie" id="cookie-notice" aria-labelledby="cookie-t" hidden>
+  <div class="titlebar titlebar--inactive"><h2 class="titlebar__title" id="cookie-t">Cookies</h2></div>
+  <div class="cookie__body">
+    {{ partial "w97/icon.html" (dict "name" "info" "size" 32) }}
+    <p>{{ .message }}{{ with .linkURL }} <a href="{{ . | relURL }}">{{ $c.linkText | default "Learn more" }}</a>{{ end }}</p>
+  </div>
+  <div class="dialog__buttons"><button type="button" class="btn btn--default" data-action="cookie-dismiss">{{ .dismiss | default "OK" }}</button></div>
+</section>
+{{- end }}{{ end -}}

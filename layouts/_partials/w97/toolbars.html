@@ -1,0 +1,81 @@
+{{- $blogURL := "/" | relURL }}{{ with partial "w97/archive.html" . }}{{ $blogURL = .RelPermalink }}{{ end -}}
+{{- $hasToc := and .IsPage (ne (trim (.TableOfContents | plainify) " \n") "") -}}
+
+
+<div class="toolbars" id="toolbars">
+  <div class="toolbar toolbar--standard" role="toolbar" aria-label="Standard">
+    <span class="toolbar__grip" aria-hidden="true"></span>
+    {{ partial "w97/tb-btn.html" (dict "icon" "new" "label" "New (Home)" "href" ("/" | relURL)) }}
+    {{ partial "w97/tb-btn.html" (dict "icon" "open" "label" "Open (Blog archive)" "href" $blogURL) }}
+    {{ partial "w97/tb-btn.html" (dict "icon" "save" "label" "Save" "action" "save") }}
+    <span class="toolbar__sep" aria-hidden="true"></span>
+    {{ partial "w97/tb-btn.html" (dict "icon" "print" "label" "Print" "action" "print") }}
+    {{ partial "w97/tb-btn.html" (dict "icon" "preview" "label" "Print Preview" "action" "print" "cls" "tb-optional") }}
+    <span class="toolbar__sep tb-optional" aria-hidden="true"></span>
+    {{ partial "w97/tb-btn.html" (dict "icon" "cut" "label" "Cut (read-only document)" "disabled" true "cls" "tb-optional") }}
+    {{ partial "w97/tb-btn.html" (dict "icon" "copy" "label" "Copy selection" "action" "copy" "cls" "tb-optional js-needs-selection") }}
+    {{ partial "w97/tb-btn.html" (dict "icon" "paste" "label" "Paste (read-only document)" "disabled" true "cls" "tb-optional") }}
+    <span class="toolbar__sep" aria-hidden="true"></span>
+    {{ partial "w97/tb-btn.html" (dict "icon" "undo" "label" "Undo (Back)" "action" "back") }}
+    {{ partial "w97/tb-btn.html" (dict "icon" "redo" "label" "Redo (Forward)" "action" "forward") }}
+    <span class="toolbar__sep" aria-hidden="true"></span>
+    {{ partial "w97/tb-btn.html" (dict "icon" "link" "label" "Insert Hyperlink (Social links)" "action" "hyperlink") }}
+    {{ partial "w97/tb-btn.html" (dict "icon" "find" "label" "Find (Search the blog)" "action" "find") }}
+    <span class="toolbar__sep tb-optional" aria-hidden="true"></span>
+    {{ partial "w97/tb-btn.html" (dict "icon" "table" "label" "Insert Table (read-only document)" "disabled" true "cls" "tb-optional") }}
+    {{ partial "w97/tb-btn.html" (dict "icon" "docmap" "label" "Document Map" "action" "toggle" "pref" "docmap" "disabled" (not $hasToc) "cls" "tb-optional") }}
+    {{ partial "w97/tb-btn.html" (dict "icon" "pilcrow" "label" "Show/Hide Formatting Marks" "action" "toggle" "pref" "marks") }}
+    <label class="tb-combo tb-combo--zoom tb-optional">
+      <span class="sr-only">Zoom</span>
+      <select class="field" data-action="zoom" data-tip="Zoom">
+        {{- range slice 75 100 125 150 200 }}
+        <option value="{{ . }}"{{ if eq . 100 }} selected{{ end }}>{{ . }}%</option>
+        {{- end }}
+      </select>
+    </label>
+    <span class="toolbar__sep" aria-hidden="true"></span>
+    {{ partial "w97/tb-btn.html" (dict "icon" "bluepage" "label" "Dark Mode" "action" "toggle" "pref" "dark") }}
+    {{ partial "w97/tb-btn.html" (dict "icon" "help" "label" "Office Assistant" "action" "toggle" "pref" "assistant") }}
+  </div>
+
+  <div class="toolbar toolbar--formatting" role="toolbar" aria-label="Formatting">
+    <span class="toolbar__grip" aria-hidden="true"></span>
+    <label class="tb-combo tb-combo--style">
+      <span class="sr-only">Style</span>
+      <select class="field" disabled data-tip="Style (read-only document)"><option>Normal</option></select>
+    </label>
+    <label class="tb-combo tb-combo--font">
+      <span class="sr-only">Document font</span>
+      <select class="field" data-action="font-family" data-tip="Font">
+                <option value="georgia">Georgia</option>
+        <option value="arial">Arial</option>
+        <option value="times">Times New Roman</option>
+        <option value="verdana">Verdana</option>
+        <option value="courier">Courier New</option>
+        <option value="comic">Comic Sans MS</option>
+      </select>
+    </label>
+    <label class="tb-combo tb-combo--size">
+      <span class="sr-only">Font size (points)</span>
+      <select class="field" data-action="font-size" data-tip="Font Size">
+        {{- range slice 9 10 11 12 13 14 16 18 20 24 }}
+        <option value="{{ . }}"{{ if eq . 12 }} selected{{ end }}>{{ . }}</option>
+        {{- end }}
+      </select>
+    </label>
+    <span class="toolbar__sep" aria-hidden="true"></span>
+    <button type="button" class="tb-btn tb-btn--text" disabled aria-label="Bold (read-only document)" data-tip="Bold"><b aria-hidden="true">B</b></button>
+    <button type="button" class="tb-btn tb-btn--text" disabled aria-label="Italic (read-only document)" data-tip="Italic"><i aria-hidden="true">I</i></button>
+    <button type="button" class="tb-btn tb-btn--text" disabled aria-label="Underline (read-only document)" data-tip="Underline"><u aria-hidden="true">U</u></button>
+    <span class="toolbar__sep" aria-hidden="true"></span>
+    {{ partial "w97/tb-btn.html" (dict "icon" "align-left" "label" "Align Left" "action" "align" "pref" "align" "value" "left") }}
+    {{ partial "w97/tb-btn.html" (dict "icon" "align-center" "label" "Center" "action" "align" "pref" "align" "value" "center") }}
+    {{ partial "w97/tb-btn.html" (dict "icon" "align-right" "label" "Align Right" "action" "align" "pref" "align" "value" "right") }}
+    {{ partial "w97/tb-btn.html" (dict "icon" "align-justify" "label" "Justify" "action" "align" "pref" "align" "value" "justify") }}
+    <span class="toolbar__sep" aria-hidden="true"></span>
+    {{ partial "w97/tb-btn.html" (dict "icon" "bullets" "label" "Bullets (read-only document)" "disabled" true) }}
+    <span class="toolbar__sep" aria-hidden="true"></span>
+    {{ partial "w97/tb-btn.html" (dict "icon" "highlight" "label" "Highlight (read-only document)" "disabled" true) }}
+    {{ partial "w97/tb-btn.html" (dict "icon" "fontcolor" "label" "Font Color (read-only document)" "disabled" true) }}
+  </div>
+</div>

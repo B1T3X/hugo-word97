@@ -1,0 +1,12 @@
+{{ define "main" }}
+<header class="folder-head">
+  <h1 class="folder-head__title">{{ partial "w97/icon.html" (dict "name" "folder" "size" 32) }}<span>{{ .Title }}</span></h1>
+  <p class="folder-head__path" aria-label="Location"><span class="field field--out">C:\My Documents\{{ .Title }}</span></p>
+</header>
+{{- with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+<ul class="folder-grid">
+  {{- range .Data.Terms.ByCount }}
+  <li><a href="{{ .Page.RelPermalink }}">{{ partial "w97/icon.html" (dict "name" "folder" "size" 32) }}<span class="folder-grid__name">{{ .Page.LinkTitle }}</span><span class="folder-grid__count">{{ .Count }} {{ cond (eq .Count 1) "document" "documents" }}</span></a></li>
+  {{- end }}
+</ul>
+{{ end }}

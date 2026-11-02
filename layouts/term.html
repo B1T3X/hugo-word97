@@ -1,0 +1,12 @@
+{{ define "main" }}
+{{- $pages := where .Pages "Params.private" "!=" true -}}
+{{- $pager := .Paginate $pages.ByDate.Reverse -}}
+<header class="folder-head">
+  <h1 class="folder-head__title">{{ partial "w97/icon.html" (dict "name" "folder" "size" 32) }}<span>{{ .Title }}</span></h1>
+  <p class="folder-head__path" aria-label="Location"><span class="field field--out">C:\My Documents\{{ .Parent.Title }}\{{ .Title }}</span></p>
+  <p class="folder-head__sub">{{ $pager.TotalNumberOfElements }} {{ cond (eq $pager.TotalNumberOfElements 1) "document" "documents" }} &middot; <a href="{{ .Parent.RelPermalink }}">All {{ .Parent.Title | lower }}</a></p>
+</header>
+{{- with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+{{ partial "doc-list.html" (dict "pages" $pager.Pages) }}
+{{ partial "pagination.html" $pager }}
+{{ end }}

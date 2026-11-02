@@ -1,0 +1,4 @@
+{{- /* A content page using the search-results (or search) layout, for no-JS / shareable ?q= searches. Returns nil if none. */ -}}
+{{- $p := false -}}
+{{- range site.Pages }}{{ if and (not $p) (in (slice "search-results" "search") .Layout) }}{{ $p = . }}{{ end }}{{ end -}}
+{{- return $p -}}

@@ -1,0 +1,74 @@
+/* ==========================================================================
+   hugo-word97 / themes: "Blue background, white text" (dark) and High Contrast
+   ========================================================================== */
+
+/* Dark mode: darker Windows scheme for the application chrome and workspace.
+   The document itself stays white paper with black ink. */
+html.dark {
+  --face: #3c3c44;
+  --hilite: #6c6c78;
+  --light: #50505a;
+  --shadow: #22222a;
+  --dark: #000;
+  --text: #e8e8e8;
+  --text-disabled: #8a8a94;
+  --text-muted: #b4b4bc;
+  --field: #1c1c24;
+  --sel-bg: #1084d0;
+  --workspace: #18181e;
+  --page-shadow: #000;
+  --desktop: #004040;
+}
+html.dark .ruler__text, html.dark .ruler__num { background-color: #d8d8d8; }
+html.dark .tb-btn:disabled .ico { filter: brightness(0) invert(.45); }
+
+/* Restore the light Windows scheme inside the page (explorer lists, code panels, buttons). */
+html.dark:not(.a11y-high-contrast) .page {
+  color-scheme: light;
+  --face: #c0c0c0;
+  --hilite: #fff;
+  --light: #dfdfdf;
+  --shadow: #808080;
+  --text: #000;
+  --text-disabled: #808080;
+  --text-muted: #555;
+  --field: #fff;
+  --sel-bg: #000080;
+}
+
+/* Accessibility: Windows "High Contrast Black". */
+html.a11y-high-contrast {
+  color-scheme: dark;
+  --face: #000;
+  --hilite: #fff;
+  --light: #fff;
+  --shadow: #fff;
+  --dark: #fff;
+  --text: #fff;
+  --text-disabled: #0f0;
+  --text-muted: #fff;
+  --title-a: #800080;
+  --title-b: #800080;
+  --field: #000;
+  --sel-bg: #800080;
+  --sel-text: #fff;
+  --tooltip: #000;
+  --workspace: #000;
+  --paper: #000;
+  --ink: #fff;
+  --ink-soft: #fff;
+  --link: #ff0;
+  --visited: #ff0;
+  --rule: #fff;
+  --inline-code-bg: #000;
+  --code-bg: #000;
+  --page-shadow: #fff;
+  --desktop: #000;
+}
+html.a11y-high-contrast .tooltip, html.a11y-high-contrast [data-tip]:hover::after,
+html.a11y-high-contrast .balloon, html.a11y-high-contrast .toast { color: #fff; border-color: #fff; }
+html.a11y-high-contrast .tb-btn .ico, html.a11y-high-contrast .ico { filter: invert(1) grayscale(1) contrast(10); }
+html.a11y-high-contrast .ruler__text, html.a11y-high-contrast .ruler__num { background-color: #000; color: #fff; }
+html.a11y-high-contrast .doc-entry__summary { color: #fff; }
+
+html.a11y-underline-links a { text-decoration: underline !important; }

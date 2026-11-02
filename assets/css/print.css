@@ -1,0 +1,18 @@
+/* ==========================================================================
+   hugo-word97 / print: just the document
+   ========================================================================== */
+@media print {
+  @page { margin: 2cm; }
+  html, body { background: #fff !important; color: #000 !important; }
+  .chrome, .statusbar, .vscroll, .docmap, .desktop, .assistant, .cookie, .toast, .fs-bar, .skip-link,
+  .page__header, .post-nav, .heading-anchor, .codeblock .titlebar, dialog { display: none !important; }
+  .app, .app-body, .workspace { display: block; padding: 0 !important; margin: 0; background: #fff !important; min-height: 0; }
+  .page { width: auto; max-width: none; padding: 0; border: 0; box-shadow: none; font-size: 12pt; color: #000; background: #fff; }
+  .prose pre, .codeblock { margin-inline: 0; }
+  .prose pre { white-space: pre-wrap; overflow: visible; box-shadow: none; border: 1px solid #999; }
+  .codeblock { box-shadow: none; padding: 0; background: none; }
+  .prose a[href^="http"]::after { content: " (" attr(href) ")"; font-size: .85em; color: #444; overflow-wrap: anywhere; }
+  .prose h2, .prose h3 { break-after: avoid; }
+  .prose pre, .prose figure, .prose table { break-inside: avoid; }
+  a { color: #000 !important; }
+}

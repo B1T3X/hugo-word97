@@ -1,0 +1,17 @@
+{{- /* Figure that resolves page-bundle resources (falls back to the raw src). */ -}}
+{{- $src := .Get "src" -}}
+{{- $alt := .Get "alt" | default "" -}}
+{{- $caption := .Get "caption" -}}
+{{- $link := .Get "link" -}}
+{{- $imgSrc := $src -}}
+{{- $w := "" }}{{ $h := "" -}}
+{{- with .Page.Resources.GetMatch $src -}}
+  {{- $imgSrc = .RelPermalink -}}
+  {{- if and (ne .MediaType.SubType "svg") (ne .MediaType.SubType "gif") }}{{ $w = .Width }}{{ $h = .Height }}{{ end -}}
+{{- end -}}
+<figure class="figure{{ with .Get "class" }} {{ . }}{{ end }}">
+  {{- if $link }}<a href="{{ $link }}">{{ end -}}
+  <img src="{{ $imgSrc }}" alt="{{ $alt }}" loading="lazy" decoding="async"{{ with $w }} width="{{ . }}"{{ end }}{{ with $h }} height="{{ . }}"{{ end }}>
+  {{- if $link }}</a>{{ end -}}
+  {{- with $caption }}<figcaption>{{ . | markdownify }}</figcaption>{{ end -}}
+</figure>

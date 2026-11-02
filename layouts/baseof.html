@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.LanguageCode | default "en" }}" class="no-js" data-view="page" data-search-index="{{ partialCached "w97/search-index-url.html" site.Home }}">
+<head>
+  {{- partial "head/meta.html" . }}
+  {{- partial "head/assets.html" . }}
+</head>
+{{- $docTitle := partial "w97/doc-title.html" . }}
+<body class="kind-{{ .Kind }}{{ with .Section }} section-{{ . }}{{ end }}">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <div class="app window" id="app">
+    <header class="chrome" id="chrome">
+      {{- partial "w97/titlebar.html" (dict "page" . "title" $docTitle) }}
+      {{- partial "w97/menubar.html" . }}
+      {{- partial "w97/toolbars.html" . }}
+      {{- partial "w97/ruler.html" . }}
+    </header>
+
+    <div class="app-body">
+      {{- if .IsPage }}{{ with .TableOfContents }}{{ if ne (trim (. | plainify) " \n") "" }}
+      <nav class="docmap" id="docmap" aria-label="Document map" hidden>
+        <div class="docmap__title">Document Map</div>
+        {{ . }}
+      </nav>
+      {{- end }}{{ end }}{{ end }}
+
+      <main class="workspace" id="main-content" tabindex="-1">
+        <div class="page" id="document">
+          {{- partial "page-header.html" . }}
+          <div class="page__body">
+            {{- block "main" . }}{{ end }}
+          </div>
+          {{- partial "page-footer.html" . }}
+        </div>
+      </main>
+
+      {{- partial "w97/scrollbar.html" . }}
+    </div>
+
+    {{- partial "w97/statusbar.html" . }}
+  </div>
+
+  {{- partial "w97/desktop.html" (dict "page" . "title" $docTitle) }}
+  {{- partial "w97/dialogs.html" (dict "page" . "title" $docTitle) }}
+  {{- partial "w97/assistant.html" . }}
+  {{- partial "w97/cookie.html" . }}
+
+  {{- $js := slice
+      (resources.Get "js/prefs.js")
+      (resources.Get "js/menus.js")
+      (resources.Get "js/dialogs.js")
+      (resources.Get "js/interactions.js")
+      (resources.Get "js/search.js")
+      (resources.Get "js/scrollbar.js")
+      (resources.Get "js/assistant.js")
+    | resources.Concat "js/word97.js" }}
+  {{- if not hugo.IsServer }}{{ $js = $js | minify | fingerprint }}{{ end }}
+  <script src="{{ $js.RelPermalink }}"{{ with $js.Data.Integrity }} integrity="{{ . }}"{{ end }} defer></script>
+</body>
+</html>

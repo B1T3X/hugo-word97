@@ -1,0 +1,38 @@
+{{- /* Original paperclip assistant (not a Microsoft asset). Off by default; enabled from Help menu. */ -}}
+{{- $blog := partial "w97/archive.html" . -}}
+{{- $about := partial "w97/about.html" . -}}
+{{- $msg := "It looks like you're reading a blog. Would you like some help?" -}}
+{{- if and .IsPage (in (partial "w97/sections.html" .) .Section) }}{{ $msg = "It looks like you're reading a blog post. Would you like some help?" }}{{ end -}}
+<aside class="assistant" id="assistant" aria-label="Office Assistant" hidden>
+  <div class="balloon" id="assistant-balloon">
+    <p class="balloon__msg">{{ $msg }}</p>
+    <ul class="balloon__opts">
+      {{- with $blog }}<li><a href="{{ .RelPermalink }}"><span class="balloon__bullet" aria-hidden="true"></span>Show me the latest posts</a></li>{{ end }}
+      {{- with $about }}<li><a href="{{ .RelPermalink }}"><span class="balloon__bullet" aria-hidden="true"></span>Tell me about the author</a></li>{{ end }}
+      <li><button type="button" data-action="find"><span class="balloon__bullet" aria-hidden="true"></span>Search the blog</button></li>
+      <li><button type="button" data-action="assistant-hide"><span class="balloon__bullet" aria-hidden="true"></span>No thanks, hide the assistant</button></li>
+    </ul>
+    <button type="button" class="btn balloon__close" data-action="assistant-balloon-close">Close</button>
+  </div>
+  <div class="assistant__window">
+    <button type="button" class="assistant__clip" data-action="assistant-balloon-open" aria-label="Ask the assistant" aria-controls="assistant-balloon" aria-expanded="true">
+      <svg viewBox="0 0 64 96" width="64" height="96" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="clip-metal" x1="0" x2="1">
+            <stop offset="0" stop-color="#5a5a6a"/><stop offset=".45" stop-color="#e8e8f0"/><stop offset="1" stop-color="#6a6a78"/>
+          </linearGradient>
+        </defs>
+        <path class="clip-wire" d="M22 88 V30 a12 12 0 0 1 24 0 V74 a7 7 0 0 1 -14 0 V36" fill="none" stroke="url(#clip-metal)" stroke-width="5" stroke-linecap="round"/>
+        <path d="M22 88 V30 a12 12 0 0 1 24 0 V74 a7 7 0 0 1 -14 0 V36" fill="none" stroke="#2a2a35" stroke-width="1" stroke-linecap="round" opacity=".55" transform="translate(1.5 1)"/>
+        <g class="clip-eyes">
+          <ellipse cx="25" cy="27" rx="8" ry="9" fill="#fff" stroke="#222" stroke-width="1.5"/>
+          <ellipse cx="42" cy="27" rx="8" ry="9" fill="#fff" stroke="#222" stroke-width="1.5"/>
+          <circle class="clip-pupil" cx="27" cy="29" r="3.2" fill="#111"/>
+          <circle class="clip-pupil" cx="44" cy="29" r="3.2" fill="#111"/>
+          <path class="clip-lid" d="M17 27 a8 9 0 0 1 16 0 z M34 27 a8 9 0 0 1 16 0 z" fill="#d8d8e0"/>
+        </g>
+        <path d="M15 15 q8 -6 15 -1 M37 13 q7 -5 14 1" fill="none" stroke="#222" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+</aside>

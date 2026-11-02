@@ -1,0 +1,4 @@
+{{- /* Publishes the search index as a fingerprinted asset (no outputs config needed). Use with partialCached. */ -}}
+{{- $json := partial "w97/search-data.html" . | jsonify -}}
+{{- $r := resources.FromString "w97/search-index.json" $json | fingerprint "md5" -}}
+{{- return $r.RelPermalink -}}

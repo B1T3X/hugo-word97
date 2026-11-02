@@ -1,0 +1,13 @@
+{{- /* Search records for every post (shared by the index asset and the optional home JSON output). */ -}}
+{{- $items := slice -}}
+{{- range partial "w97/posts.html" . -}}
+  {{- $items = $items | append (dict
+      "t" .Title
+      "u" .RelPermalink
+      "d" (cond .Date.IsZero "" (.Date.Format "2006-01-02"))
+      "s" (.Description | default (.Summary | plainify | strings.TrimSpace | truncate 200))
+      "g" (.Params.tags | default slice)
+      "c" (.Plain | strings.TrimSpace | truncate 6000 "")
+    ) -}}
+{{- end -}}
+{{- return $items -}}

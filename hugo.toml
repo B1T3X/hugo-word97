@@ -1,0 +1,36 @@
+# Theme defaults. Site configuration overrides any of these.
+
+[module]
+  [module.hugoVersion]
+    extended = false
+    min = "0.146.0"
+
+[params.word97]
+  # Shown in the title bar: "<documentName> - Microsoft Word" (home and lists).
+  documentName = ""
+  # About page (e.g. "/about"). Rendered as the homepage intro and linked from the Help menu.
+  aboutPage = ""
+  showIntro = true
+  # Sections listed as posts. Empty = Hugo's automatic site.MainSections.
+  # mainSections = ["posts"]
+  archiveTitle = "My Documents"
+  latestPostsCount = 8
+  # Headings on the home page (each rendered as WordArt).
+  titleStyle = "purple"
+  topicsTitle = "What You'll Find Here"
+  topicsStyle = "orange"
+  socialTitle = "Find Me Online!"
+  latestTitle = "Latest Posts"
+  latestStyle = "blue"
+  topics = []
+  footerLinks = []
+  # Paperclip assistant: false = off until the visitor enables it from Help.
+  assistantDefault = false
+
+  [params.word97.cookieNotice]
+    enable = false
+    message = "This site uses cookies."
+    dismiss = "OK"
+    linkText = ""
+    linkURL = ""
+

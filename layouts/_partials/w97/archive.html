@@ -1,0 +1,3 @@
+{{- /* The archive ("My Documents") page: the first main section. Returns nil when missing. */ -}}
+{{- $sections := partial "w97/sections.html" . -}}
+{{- return site.GetPage (printf "/%s" (index $sections 0)) -}}

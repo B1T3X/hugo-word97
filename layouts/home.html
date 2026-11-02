@@ -1,0 +1,55 @@
+{{ define "main" }}
+{{- $cfg := site.Params.word97 -}}
+{{- $posts := partial "w97/posts.html" . -}}
+{{- $blog := partial "w97/archive.html" . -}}
+
+<div class="home-title">
+  {{ partial "wordart.html" (dict "text" site.Title "style" ($cfg.titleStyle | default "purple") "level" 1 "class" "wordart--title" "attrs" "data-wordart-title") }}
+  {{- with site.Params.description }}
+  <p class="home-tagline">{{ . }}</p>
+  {{- end }}
+  {{ partial "site-nav.html" . }}
+</div>
+
+{{- with and (ne $cfg.showIntro false) (partial "w97/about.html" .) }}
+<section class="home-intro prose" aria-label="Introduction">
+  {{- $intro := .Content }}
+  {{- /* The "Find Me Online!" section below already lists the social links,
+         so drop an intro paragraph that just points to them ("...find me on..."). */}}
+  {{- if site.Params.social }}{{ $intro = replaceRE `(?is)<p>[^<]*find me on.*?</p>\s*` "" $intro | safeHTML }}{{ end }}
+  {{ $intro }}
+</section>
+{{- end }}
+
+{{- with .Content }}
+<div class="prose">{{ . }}</div>
+{{- end }}
+
+{{- with $cfg.topics }}
+<section class="home-section" aria-labelledby="topics">
+  {{ partial "wordart.html" (dict "text" ($cfg.topicsTitle | default "What You'll Find Here") "style" ($cfg.topicsStyle | default "orange") "level" 2 "id" "topics") }}
+  <ul class="topics">
+    {{- range . }}
+    <li>{{ . }}</li>
+    {{- end }}
+  </ul>
+</section>
+{{- end }}
+
+{{- with site.Params.social }}
+<section class="home-section home-social" aria-labelledby="find-me">
+  {{ partial "wordart.html" (dict "text" ($cfg.socialTitle | default "Find Me Online!") "style" "burst" "level" 2 "id" "find-me") }}
+  {{ partial "social-links.html" (dict "class" "social--big") }}
+</section>
+{{- end }}
+
+{{- with $posts }}
+<section class="home-section" aria-labelledby="latest">
+  {{ partial "wordart.html" (dict "text" ($cfg.latestTitle | default "Latest Posts") "style" ($cfg.latestStyle | default "blue") "level" 2 "id" "latest") }}
+  {{ partial "doc-list.html" (dict "pages" (first ($cfg.latestPostsCount | default 8) .) "numbered" true "heading" 3) }}
+  {{- with $blog }}
+  <p class="more-docs"><a href="{{ .RelPermalink }}">{{ partial "w97/icon.html" (dict "name" "folder") }}<span>More documents ({{ len $posts }} in My Documents)...</span></a></p>
+  {{- end }}
+</section>
+{{- end }}
+{{ end }}

@@ -1,0 +1,9 @@
+{{- /*
+  Pixel icon from the generated sprite (assets/icons/sprite.svg).
+  Usage: {{ partial "w97/icon.html" (dict "name" "save") }}
+         {{ partial "w97/icon.html" (dict "name" "word" "size" 32 "class" "x") }}
+*/ -}}
+{{- $sprite := partialCached "w97/sprite-url.html" "sprite" -}}
+{{- $size := .size | default 16 -}}
+<svg class="ico{{ with .class }} {{ . }}{{ end }}" width="{{ $size }}" height="{{ $size }}" aria-hidden="true" focusable="false"><use href="{{ $sprite }}#i-{{ .name }}"/></svg>
+{{- /* trim */ -}}

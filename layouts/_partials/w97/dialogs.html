@@ -1,0 +1,237 @@
+{{- $p := .page -}}
+{{- $title := .title -}}
+{{- $about := partial "w97/about.html" $p -}}
+{{- $searchPage := partial "w97/search-page.html" $p -}}
+
+{{- /* Close / Exit: "save changes?" */}}
+<dialog class="window dialog" id="dlg-close" aria-labelledby="dlg-close-t" aria-describedby="dlg-close-d">
+  <form method="dialog">
+    <div class="titlebar"><span class="titlebar__title" id="dlg-close-t">Microsoft Word</span>
+      <div class="titlebar__controls"><button class="tbtn tbtn--close" value="cancel" aria-label="Close dialog"><svg width="8" height="7" viewBox="0 0 8 7" aria-hidden="true"><path d="M0 0h2v1h1v1h2V1h1V0h2v1H7v1H6v1H5v1h1v1h1v1h1v1H6V6H5V5H3v1H2v1H0V6h1V5h1V4h1V3H2V2H1V1H0z"/></svg></button></div>
+    </div>
+    <div class="dialog__body dialog__body--msg">
+      {{ partial "w97/icon.html" (dict "name" "warning" "size" 32) }}
+      <p id="dlg-close-d">Do you want to save the changes you made to {{ $title }}?</p>
+    </div>
+    <div class="dialog__buttons">
+      <button class="btn btn--default" value="yes" autofocus>Yes</button>
+      <button class="btn" value="no">No</button>
+      <button class="btn" value="cancel">Cancel</button>
+    </div>
+  </form>
+</dialog>
+
+{{- /* Generic message box, filled in by JS (Save, Copy, errors). */}}
+<dialog class="window dialog" id="dlg-msg" aria-labelledby="dlg-msg-t" aria-describedby="dlg-msg-d">
+  <form method="dialog">
+    <div class="titlebar"><span class="titlebar__title" id="dlg-msg-t">Microsoft Word</span>
+      <div class="titlebar__controls"><button class="tbtn tbtn--close" value="cancel" aria-label="Close dialog"><svg width="8" height="7" viewBox="0 0 8 7" aria-hidden="true"><path d="M0 0h2v1h1v1h2V1h1V0h2v1H7v1H6v1H5v1h1v1h1v1h1v1H6V6H5V5H3v1H2v1H0V6h1V5h1V4h1V3H2V2H1V1H0z"/></svg></button></div>
+    </div>
+    <div class="dialog__body dialog__body--msg">
+      <span class="dialog__icon" data-icon="info">{{ partial "w97/icon.html" (dict "name" "info" "size" 32 "class" "ico-info") }}{{ partial "w97/icon.html" (dict "name" "warning" "size" 32 "class" "ico-warning") }}{{ partial "w97/icon.html" (dict "name" "error" "size" 32 "class" "ico-error") }}</span>
+      <p id="dlg-msg-d"></p>
+    </div>
+    <div class="dialog__buttons"><button class="btn btn--default" value="ok" autofocus>OK</button></div>
+  </form>
+</dialog>
+
+{{- /* Find and Replace: searches the blog. */}}
+<dialog class="window dialog dialog--find" id="dlg-find" aria-labelledby="dlg-find-t">
+  <div class="titlebar"><span class="titlebar__title" id="dlg-find-t">Find and Replace</span>
+    <div class="titlebar__controls"><button type="button" class="tbtn tbtn--close" data-close aria-label="Close dialog"><svg width="8" height="7" viewBox="0 0 8 7" aria-hidden="true"><path d="M0 0h2v1h1v1h2V1h1V0h2v1H7v1H6v1H5v1h1v1h1v1h1v1H6V6H5V5H3v1H2v1H0V6h1V5h1V4h1V3H2V2H1V1H0z"/></svg></button></div>
+  </div>
+  <div class="tabs" role="tablist" aria-label="Find and Replace">
+    <button type="button" class="tab" role="tab" aria-selected="true" id="find-tab" aria-controls="find-panel"><u>F</u>ind</button>
+    <button type="button" class="tab" role="tab" aria-selected="false" aria-disabled="true" tabindex="-1">Re<u>p</u>lace</button>
+    <button type="button" class="tab" role="tab" aria-selected="false" aria-disabled="true" tabindex="-1"><u>G</u>o To</button>
+  </div>
+  <div class="tabpanel" role="tabpanel" id="find-panel" aria-labelledby="find-tab">
+    <form class="find" id="find-form" role="search" {{ with $searchPage }}action="{{ .RelPermalink }}" {{ end }}method="get">
+      <div class="find__row">
+        <label for="find-q" class="find__label">Fi<u>n</u>d what:</label>
+        <input class="field find__input" id="find-q" name="q" type="search" autocomplete="off" spellcheck="false" required aria-describedby="find-status">
+        <div class="find__actions">
+          <button class="btn btn--default" type="submit"><u>F</u>ind Next</button>
+          <button class="btn" type="button" data-close>Cancel</button>
+        </div>
+      </div>
+      <p class="find__status" id="find-status" role="status" aria-live="polite">Search titles, summaries, tags and text of all posts.</p>
+      <ul class="listbox find__results" id="find-results" aria-label="Search results" hidden></ul>
+    </form>
+  </div>
+</dialog>
+
+{{- /* Insert Hyperlink: social links. */}}
+<dialog class="window dialog" id="dlg-hyperlink" aria-labelledby="dlg-hyperlink-t">
+  <form method="dialog">
+    <div class="titlebar"><span class="titlebar__title" id="dlg-hyperlink-t">Insert Hyperlink</span>
+      <div class="titlebar__controls"><button class="tbtn tbtn--close" value="cancel" aria-label="Close dialog"><svg width="8" height="7" viewBox="0 0 8 7" aria-hidden="true"><path d="M0 0h2v1h1v1h2V1h1V0h2v1H7v1H6v1H5v1h1v1h1v1h1v1H6V6H5V5H3v1H2v1H0V6h1V5h1V4h1V3H2V2H1V1H0z"/></svg></button></div>
+    </div>
+    <div class="dialog__body">
+      <fieldset class="groupbox">
+        <legend>Link to file or URL:</legend>
+        {{- with site.Params.social }}
+        <ul class="listbox listbox--links">
+          {{- range . }}
+          <li><a href="{{ .url }}" target="_blank" rel="noopener me">{{ with .icon }}{{ partial "w97/icon.html" (dict "name" .) }}{{ end }}<span>{{ .name }}</span><span class="listbox__url">{{ .url }}</span></a></li>
+          {{- end }}
+        </ul>
+        {{- else }}
+        <p>No social links configured.</p>
+        {{- end }}
+      </fieldset>
+    </div>
+    <div class="dialog__buttons"><button class="btn btn--default" value="ok">OK</button></div>
+  </form>
+</dialog>
+
+{{- /* File > Properties */}}
+<dialog class="window dialog dialog--props" id="dlg-properties" aria-labelledby="dlg-properties-t">
+  <form method="dialog">
+    <div class="titlebar"><span class="titlebar__title" id="dlg-properties-t">{{ $title }} Properties</span>
+      <div class="titlebar__controls"><button class="tbtn tbtn--close" value="cancel" aria-label="Close dialog"><svg width="8" height="7" viewBox="0 0 8 7" aria-hidden="true"><path d="M0 0h2v1h1v1h2V1h1V0h2v1H7v1H6v1H5v1h1v1h1v1h1v1H6V6H5V5H3v1H2v1H0V6h1V5h1V4h1V3H2V2H1V1H0z"/></svg></button></div>
+    </div>
+    <div class="tabs" aria-hidden="true"><span class="tab" aria-selected="true">Summary</span></div>
+    <div class="tabpanel">
+      <dl class="props">
+        <dt>Title:</dt><dd>{{ $p.Title | default site.Title }}</dd>
+        {{- with $p.Description }}<dt>Subject:</dt><dd>{{ . }}</dd>{{ end }}
+        <dt>Author:</dt><dd>{{ partial "w97/author.html" $p }}</dd>
+        {{- with $p.Params.categories }}<dt>Category:</dt><dd>{{ delimit . ", " }}</dd>{{ end }}
+        {{- with $p.Params.tags }}<dt>Keywords:</dt><dd>{{ delimit . ", " }}</dd>{{ end }}
+        {{- if not $p.Date.IsZero }}<dt>Created:</dt><dd>{{ $p.Date | time.Format ":date_long" }}</dd>{{ end }}
+        {{- if and (not $p.Lastmod.IsZero) (ne $p.Lastmod $p.Date) }}<dt>Modified:</dt><dd>{{ $p.Lastmod | time.Format ":date_long" }}</dd>{{ end }}
+        {{- if $p.IsPage }}<dt>Words:</dt><dd>{{ lang.FormatNumber 0 $p.WordCount }} ({{ $p.ReadingTime }} min read)</dd>{{ end }}
+        <dt>Location:</dt><dd><code>{{ $p.RelPermalink }}</code></dd>
+      </dl>
+    </div>
+    <div class="dialog__buttons">
+      {{- with $about }}<a class="btn" href="{{ .RelPermalink }}">About the Author</a>{{ end }}
+      <button class="btn btn--default" value="ok">OK</button>
+    </div>
+  </form>
+</dialog>
+
+{{- /* Tools > Word Count (computed from the rendered article). */}}
+<dialog class="window dialog" id="dlg-wordcount" aria-labelledby="dlg-wordcount-t">
+  <form method="dialog">
+    <div class="titlebar"><span class="titlebar__title" id="dlg-wordcount-t">Word Count</span>
+      <div class="titlebar__controls"><button class="tbtn tbtn--close" value="cancel" aria-label="Close dialog"><svg width="8" height="7" viewBox="0 0 8 7" aria-hidden="true"><path d="M0 0h2v1h1v1h2V1h1V0h2v1H7v1H6v1H5v1h1v1h1v1h1v1H6V6H5V5H3v1H2v1H0V6h1V5h1V4h1V3H2V2H1V1H0z"/></svg></button></div>
+    </div>
+    <div class="dialog__body">
+      <dl class="props props--count" id="wordcount-stats"></dl>
+    </div>
+    <div class="dialog__buttons"><button class="btn btn--default" value="ok">Close</button></div>
+  </form>
+</dialog>
+
+{{- /* Format > Font: reading font and size. */}}
+<dialog class="window dialog dialog--font" id="dlg-font" aria-labelledby="dlg-font-t">
+  <form method="dialog" id="font-form">
+    <div class="titlebar"><span class="titlebar__title" id="dlg-font-t">Font</span>
+      <div class="titlebar__controls"><button class="tbtn tbtn--close" value="cancel" aria-label="Close dialog"><svg width="8" height="7" viewBox="0 0 8 7" aria-hidden="true"><path d="M0 0h2v1h1v1h2V1h1V0h2v1H7v1H6v1H5v1h1v1h1v1h1v1H6V6H5V5H3v1H2v1H0V6h1V5h1V4h1V3H2V2H1V1H0z"/></svg></button></div>
+    </div>
+    <div class="dialog__body">
+      <div class="font-grid">
+        <label><u>F</u>ont:
+          <select class="field" name="font" size="6">
+                        <option value="georgia">Georgia</option>
+            <option value="arial">Arial</option>
+            <option value="times">Times New Roman</option>
+            <option value="verdana">Verdana</option>
+            <option value="courier">Courier New</option>
+            <option value="comic">Comic Sans MS</option>
+          </select>
+        </label>
+        <label><u>S</u>ize:
+          <select class="field" name="size" size="6">
+            {{- range slice 9 10 11 12 13 14 16 18 20 24 }}<option value="{{ . }}">{{ . }}</option>{{ end }}
+          </select>
+        </label>
+      </div>
+      <fieldset class="groupbox">
+        <legend>Preview</legend>
+        <p class="font-preview" id="font-preview">The quick brown fox jumps over the lazy dog.</p>
+      </fieldset>
+      <p class="dialog__hint">Changes the reading font of documents on this site. Saved for your next visit.</p>
+    </div>
+    <div class="dialog__buttons">
+      <button class="btn" value="default" type="submit">De<u>f</u>ault...</button>
+      <button class="btn btn--default" value="ok" type="submit">OK</button>
+      <button class="btn" value="cancel" type="submit">Cancel</button>
+    </div>
+  </form>
+</dialog>
+
+{{- /* Tools > Accessibility Options (also the status bar button). */}}
+<dialog class="window dialog dialog--a11y" id="dlg-a11y" aria-labelledby="dlg-a11y-t">
+  <form method="dialog">
+    <div class="titlebar"><span class="titlebar__title" id="dlg-a11y-t">Accessibility Options</span>
+      <div class="titlebar__controls"><button class="tbtn tbtn--close" value="cancel" aria-label="Close dialog"><svg width="8" height="7" viewBox="0 0 8 7" aria-hidden="true"><path d="M0 0h2v1h1v1h2V1h1V0h2v1H7v1H6v1H5v1h1v1h1v1h1v1H6V6H5V5H3v1H2v1H0V6h1V5h1V4h1V3H2V2H1V1H0z"/></svg></button></div>
+    </div>
+    <div class="dialog__body">
+      <fieldset class="groupbox">
+        <legend>Text size</legend>
+        <div class="btnrow">
+          <button type="button" class="btn" data-action="a11y-font" data-value="-1" aria-label="Decrease text size">A-</button>
+          <button type="button" class="btn" data-action="a11y-font" data-value="0" aria-label="Reset text size">A</button>
+          <button type="button" class="btn" data-action="a11y-font" data-value="1" aria-label="Increase text size">A+</button>
+          <output class="field field--out" id="a11y-scale" aria-live="polite">100%</output>
+        </div>
+      </fieldset>
+      <fieldset class="groupbox">
+        <legend>Display</legend>
+        <label class="checkbox"><input type="checkbox" data-pref-input="contrast"><span>Use <u>H</u>igh Contrast</span></label>
+        <label class="checkbox"><input type="checkbox" data-pref-input="underline"><span>Always <u>u</u>nderline links</span></label>
+        <label class="checkbox"><input type="checkbox" data-pref-input="dark"><span><u>D</u>ark mode</span></label>
+      </fieldset>
+    </div>
+    <div class="dialog__buttons">
+      <button type="button" class="btn" data-action="a11y-reset"><u>R</u>eset All</button>
+      <button class="btn btn--default" value="ok">OK</button>
+    </div>
+  </form>
+</dialog>
+
+{{- /* Insert > WordArt: gallery that restyles the site title. */}}
+<dialog class="window dialog dialog--wordart" id="dlg-wordart" aria-labelledby="dlg-wordart-t">
+  <form method="dialog">
+    <div class="titlebar"><span class="titlebar__title" id="dlg-wordart-t">WordArt Gallery</span>
+      <div class="titlebar__controls"><button class="tbtn tbtn--close" value="cancel" aria-label="Close dialog"><svg width="8" height="7" viewBox="0 0 8 7" aria-hidden="true"><path d="M0 0h2v1h1v1h2V1h1V0h2v1H7v1H6v1H5v1h1v1h1v1h1v1H6V6H5V5H3v1H2v1H0V6h1V5h1V4h1V3H2V2H1V1H0z"/></svg></button></div>
+    </div>
+    <div class="dialog__body">
+      <p class="dialog__hint" id="wordart-hint">Select a WordArt style for the title on the home page:</p>
+      <div class="wordart-gallery" role="radiogroup" aria-labelledby="wordart-hint">
+        {{- range slice "purple" "orange" "blue" "wave" "rainbow" "chrome" "outline" "classy" }}
+        <button type="button" class="wordart-gallery__tile" role="radio" aria-checked="false" data-action="wordart-style" data-value="{{ . }}" aria-label="{{ . | humanize }} style">
+          <span class="wordart wordart--{{ . }} wordart--mini" aria-hidden="true"><span class="wordart__face" data-text="WordArt">WordArt</span></span>
+        </button>
+        {{- end }}
+      </div>
+    </div>
+    <div class="dialog__buttons">
+      <button class="btn btn--default" value="ok">OK</button>
+      <button class="btn" value="reset" data-action="wordart-style" data-value="">Reset</button>
+    </div>
+  </form>
+</dialog>
+
+{{- /* Help > About Microsoft Word */}}
+<dialog class="window dialog dialog--about" id="dlg-about" aria-labelledby="dlg-about-t">
+  <form method="dialog">
+    <div class="titlebar"><span class="titlebar__title" id="dlg-about-t">About Microsoft Word</span>
+      <div class="titlebar__controls"><button class="tbtn tbtn--close" value="cancel" aria-label="Close dialog"><svg width="8" height="7" viewBox="0 0 8 7" aria-hidden="true"><path d="M0 0h2v1h1v1h2V1h1V0h2v1H7v1H6v1H5v1h1v1h1v1h1v1H6V6H5V5H3v1H2v1H0V6h1V5h1V4h1V3H2V2H1V1H0z"/></svg></button></div>
+    </div>
+    <div class="dialog__body about">
+      <div class="about__logo">{{ partial "w97/icon.html" (dict "name" "word" "size" 48) }}</div>
+      <div class="about__text">
+        <p class="about__product"><b>Microsoft<sup>&reg;</sup> Word 97</b> <span class="about__not">(not really)</span></p>
+        <p>This is <b>hugo-word97</b>, a Hugo theme that dresses a blog up as a 1997 word processor. It is a fan homage, not affiliated with or endorsed by Microsoft.</p>
+        <p>This product is licensed to:<br><b>{{ partial "w97/author.html" site.Home }}</b><br>{{ site.BaseURL | replaceRE "^https?://" "" | strings.TrimSuffix "/" }}</p>
+        <hr class="etched">
+        <p class="about__small">Built with Hugo {{ hugo.Version }} on {{ now.Format "January 2, 2006" }}. No backend, no frameworks, about as much JavaScript as Word 97 had RAM.</p>
+      </div>
+    </div>
+    <div class="dialog__buttons"><button class="btn btn--default" value="ok">OK</button></div>
+  </form>
+</dialog>

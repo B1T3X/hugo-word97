@@ -1,0 +1,8 @@
+{{- /* Social links from params.social: [{name, url, icon}]. dict: class */ -}}
+{{- with site.Params.social }}
+<ul class="social{{ with $.class }} {{ . }}{{ end }}">
+  {{- range . }}
+  <li><a href="{{ .url }}" target="_blank" rel="noopener me">{{ with .icon }}{{ partial "w97/icon.html" (dict "name" .) }}{{ end }}<span>{{ .name }}</span></a></li>
+  {{- end }}
+</ul>
+{{- end }}

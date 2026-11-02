@@ -1,0 +1,189 @@
+/* ==========================================================================
+   hugo-word97 / wordart
+   One text node, two CSS layers:
+     .wordart__face          solid "side" colour + stacked text-shadows = extrusion
+     .wordart__face::after   gradient face, clipped to the glyphs (hidden from AT)
+   ========================================================================== */
+
+.wordart {
+  --wa-font: "Arial Black", "Arial Bold", Gadget, Arial, sans-serif;
+  --wa-side: #333;
+  --wa-fill: #888;
+  --wa-solid: #888;
+  --wa-extrude: none;
+  --wa-stroke: 0;
+  --wa-stroke-color: transparent;
+  --wa-transform: none;
+  margin: .3em 0 .5em;
+  font-family: var(--wa-font);
+  font-weight: 900;
+  font-style: normal;
+  line-height: 1.12;
+  letter-spacing: -.01em;
+  font-size: clamp(1.7rem, 4.5vw, 2.5rem);
+  isolation: isolate;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+.wordart__face {
+  position: relative;
+  display: inline-block;
+  color: var(--wa-side);
+  text-shadow: var(--wa-extrude);
+  transform: var(--wa-transform);
+  transform-origin: 50% 60%;
+  padding: 0 .12em .14em 0;
+}
+.wordart__face::after {
+  content: attr(data-text);
+  content: attr(data-text) / "";
+  position: absolute;
+  inset: 0;
+  padding: inherit;
+  background: var(--wa-fill);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: var(--wa-stroke) var(--wa-stroke-color);
+  text-shadow: none;
+  pointer-events: none;
+}
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .wordart__face::after { background: none; color: var(--wa-solid); }
+}
+
+/* Purple 3D ("Jazz") - site title */
+.wordart--purple {
+  --wa-side: #24106b;
+  --wa-fill: linear-gradient(180deg, #e3b8ff 0%, #a35cff 30%, #6a2cf0 60%, #2e4fff 100%);
+  --wa-solid: #6a2cf0;
+  --wa-stroke: .012em;
+  --wa-stroke-color: #1c0b55;
+  --wa-extrude: .015em .015em 0 #24106b, .03em .03em 0 #24106b, .045em .045em 0 #24106b, .06em .06em 0 #24106b, .075em .075em 0 #1a0a50, .09em .09em 0 #1a0a50, .1em .1em 0 #120638, .14em .16em .06em rgba(0, 0, 40, .35);
+  --wa-transform: perspective(600px) rotateX(14deg) skewX(-9deg) rotate(-2deg);
+  font-style: italic;
+}
+.wordart--title { font-size: clamp(2.6rem, 9vw, 5rem); margin: .15em 0 .3em; letter-spacing: -.02em; }
+
+/* Orange / yellow extruded ("Free!") */
+.wordart--orange {
+  --wa-font: Impact, "Arial Black", "Haettenschweiler", sans-serif;
+  --wa-side: #8a3200;
+  --wa-fill: linear-gradient(180deg, #ffff8a 0%, #ffe100 30%, #ff9a00 65%, #ff5a00 100%);
+  --wa-solid: #ff9a00;
+  --wa-stroke: .01em;
+  --wa-stroke-color: #a33a00;
+  --wa-extrude: .02em .02em 0 #a33a00, .04em .04em 0 #9a3600, .06em .06em 0 #8a3200, .08em .08em 0 #7a2c00, .1em .1em 0 #6b2600, .12em .12em 0 #5c2000;
+  --wa-transform: perspective(500px) rotateY(-12deg) rotate(-3deg);
+  font-weight: 400;
+  letter-spacing: .01em;
+}
+
+/* Blue 3D ("Windows 95") */
+.wordart--blue {
+  --wa-side: #061a66;
+  --wa-fill: linear-gradient(180deg, #a8d8ff 0%, #4a9cff 35%, #0050d8 70%, #0a2ea0 100%);
+  --wa-solid: #0050d8;
+  --wa-stroke: .01em;
+  --wa-stroke-color: #061a66;
+  --wa-extrude: .02em .02em 0 #061a66, .04em .04em 0 #061a66, .06em .06em 0 #04124a, .08em .08em 0 #04124a, .1em .12em .04em rgba(60, 20, 0, .45);
+  --wa-transform: skewX(-4deg);
+}
+
+/* Wave ("MakeWordArt") */
+.wordart--wave { --wa-side: #0b2c9a; }
+.wordart--wave .wordart__face { padding: .25em .2em .3em; }
+.wordart__face--letters::after { content: none; }
+.wordart__ch, .wordart__sp { position: relative; display: inline-block; }
+.wordart__sp { width: .3em; }
+.wordart__ch {
+  color: #0b2c9a;
+  text-shadow: -.03em -.03em 0 #0b2c9a, -.05em -.05em 0 #0b2c9a, -.07em -.06em 0 #0b2c9a;
+  transform: translateY(calc(sin(var(--i) * 0.9rad) * .16em)) scaleY(1.25);
+}
+.wordart__ch::after {
+  content: attr(data-text);
+  content: attr(data-text) / "";
+  position: absolute; inset: 0;
+  color: #5bc8ff;
+  -webkit-text-stroke: .02em #0b2c9a;
+  text-shadow: none;
+}
+
+/* Rainbow ("freedom") */
+.wordart--rainbow {
+  --wa-font: "Arial Rounded MT Bold", "Arial Black", Arial, sans-serif;
+  --wa-side: rgba(0, 0, 0, .18);
+  --wa-fill: linear-gradient(90deg, #e40000, #ff8c00, #ffd800, #22b14c, #0070ff, #7a1fd1);
+  --wa-solid: #7a1fd1;
+  --wa-extrude: .05em .07em .03em rgba(0, 0, 0, .18);
+}
+.wordart--rainbow .wordart__face { color: transparent; }
+
+/* Chrome ("Clippy") */
+.wordart--chrome {
+  --wa-side: #3a3a3a;
+  --wa-fill: linear-gradient(180deg, #fff 0%, #d6d6d6 35%, #8a8a8a 50%, #e8e8e8 70%, #9c9c9c 100%);
+  --wa-solid: #9c9c9c;
+  --wa-stroke: .01em;
+  --wa-stroke-color: #333;
+  --wa-extrude: .02em .02em 0 #4a4a4a, .04em .04em 0 #404040, .06em .06em 0 #363636, .08em .08em 0 #2c2c2c, .1em .1em 0 #222;
+  --wa-transform: perspective(500px) rotateY(14deg);
+}
+
+/* Outline ("impress") */
+.wordart--outline {
+  --wa-font: Arial, Helvetica, sans-serif;
+  --wa-side: transparent;
+  --wa-fill: #fff;
+  --wa-solid: #fff;
+  --wa-stroke: .025em;
+  --wa-stroke-color: #000;
+  font-weight: 400;
+}
+
+/* Classy serif ("Classy") */
+.wordart--classy {
+  --wa-font: "Times New Roman", Times, serif;
+  --wa-side: #0c1c5c;
+  --wa-fill: linear-gradient(180deg, #fff 0%, #fde3d6 45%, #e8a890 100%);
+  --wa-solid: #e8a890;
+  --wa-stroke: .01em;
+  --wa-stroke-color: #0c1c5c;
+  --wa-extrude: .035em .035em 0 #0c1c5c, .05em .05em 0 #0c1c5c;
+  font-weight: 700;
+}
+
+/* Starburst ("Find Me Online!") */
+.wordart-burst {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  margin: .4em auto .2em;
+  padding: 1.1em 2.4em;
+  transform: rotate(-4deg);
+}
+.wordart-burst__star { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; filter: drop-shadow(3px 3px 0 rgba(0, 0, 0, .25)); }
+.wordart--burst {
+  --wa-font: "Arial Black", Arial, sans-serif;
+  --wa-side: #2a0060;
+  --wa-fill: linear-gradient(180deg, #c040ff, #6a00c8);
+  --wa-solid: #6a00c8;
+  --wa-extrude: .03em .03em 0 #2a0060;
+  margin: 0;
+  font-style: italic;
+  font-size: clamp(1.4rem, 4vw, 2.1rem);
+}
+
+/* Tiles in the WordArt Gallery dialog */
+.wordart--mini { margin: 0; font-size: 19px; }
+.wordart--mini.wordart--wave .wordart__face { padding: 0 .1em; }
+
+/* Plain fallbacks */
+@media (forced-colors: active) {
+  .wordart__face { text-shadow: none; color: CanvasText; transform: none; }
+  .wordart__face::after { display: none; }
+}
+html.a11y-high-contrast .wordart__face, html.a11y-high-contrast .wordart__ch { color: #ff0; text-shadow: none; transform: none; }
+html.a11y-high-contrast .wordart__face::after, html.a11y-high-contrast .wordart__ch::after { display: none; }
+html.a11y-high-contrast .wordart-burst__star { display: none; }

@@ -1,0 +1,14 @@
+{{ define "main" }}
+<header class="folder-head">
+  <h1 class="folder-head__title">{{ partial "w97/icon.html" (dict "name" "find" "size" 32) }}<span>{{ .Title | default "Search Results" }}</span></h1>
+</header>
+<form class="find find--page" id="search-page-form" role="search" action="{{ .RelPermalink }}" method="get">
+  <label for="search-page-q" class="find__label">Fi<u>n</u>d what:</label>
+  <input class="field find__input" id="search-page-q" name="q" type="search" autocomplete="off" spellcheck="false" required>
+  <button class="btn btn--default" type="submit"><u>F</u>ind</button>
+</form>
+<p class="find__status" id="search-page-status" role="status" aria-live="polite">
+  <noscript>Search needs JavaScript. {{ with partial "w97/archive.html" . }}Browse <a href="{{ .RelPermalink }}">all documents</a> instead.{{ end }}</noscript>
+</p>
+<div id="search-page-results"></div>
+{{ end }}

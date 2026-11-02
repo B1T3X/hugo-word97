@@ -1,0 +1,152 @@
+{{- $p := . -}}
+{{- $posts := partial "w97/posts.html" . -}}
+{{- $blogURL := "/" | relURL }}{{ with partial "w97/archive.html" . }}{{ $blogURL = .RelPermalink }}{{ end -}}
+{{- $aboutURL := "" }}{{ with partial "w97/about.html" . }}{{ $aboutURL = .RelPermalink }}{{ end -}}
+{{- $hasToc := and .IsPage (ne (trim (.TableOfContents | plainify) " \n") "") -}}
+
+{{- $mru := slice -}}
+{{- range $i, $post := first 4 $posts -}}
+  {{- $mru = $mru | append (dict "label" (printf "&%d %s.doc" (add $i 1) $post.Title) "href" $post.RelPermalink "cls" "menu__mru") -}}
+{{- end -}}
+
+{{- $file := slice
+  (dict "label" "&New" "href" ("/" | relURL) "shortcut" "Home")
+  (dict "label" "&Open..." "href" $blogURL "shortcut" "Archive")
+  (dict "label" "&Close" "action" "close")
+  (dict "sep" true)
+  (dict "label" "&Save" "action" "save")
+  (dict "label" "Save &As..." "disabled" true)
+  (dict "sep" true)
+  (dict "label" "Page Set&up..." "disabled" true)
+  (dict "label" "Print Pre&view" "action" "print")
+  (dict "label" "&Print..." "action" "print" "shortcut" "Ctrl+P")
+  (dict "sep" true)
+  (dict "label" "Propert&ies" "action" "properties")
+-}}
+{{- if $mru }}{{ $file = $file | append (dict "sep" true) | append $mru }}{{ end -}}
+{{- $file = $file | append (dict "sep" true) (dict "label" "E&xit" "action" "close") -}}
+
+{{- $edit := slice
+  (dict "label" "&Undo" "action" "back" "shortcut" "Back")
+  (dict "label" "&Repeat" "action" "forward" "shortcut" "Forward")
+  (dict "sep" true)
+  (dict "label" "Cu&t" "disabled" true)
+  (dict "label" "&Copy" "action" "copy" "shortcut" "Ctrl+C")
+  (dict "label" "&Paste" "disabled" true)
+  (dict "sep" true)
+  (dict "label" "Select A&ll" "action" "select-all")
+  (dict "sep" true)
+  (dict "label" "&Find..." "action" "find")
+  (dict "label" "R&eplace..." "disabled" true)
+  (dict "label" "&Go To..." "disabled" true)
+-}}
+
+{{- $view := slice
+  (dict "label" "&Normal" "action" "view" "type" "radio" "pref" "view" "value" "normal")
+  (dict "label" "&Online Layout" "action" "view" "type" "radio" "pref" "view" "value" "online")
+  (dict "label" "&Page Layout" "action" "view" "type" "radio" "pref" "view" "value" "page")
+  (dict "label" "O&utline" "disabled" true)
+  (dict "sep" true)
+  (dict "label" "&Standard Toolbar" "action" "toggle" "type" "check" "pref" "tb-standard" "cls" "menu__desktop")
+  (dict "label" "&Formatting Toolbar" "action" "toggle" "type" "check" "pref" "tb-formatting" "cls" "menu__desktop")
+  (dict "label" "&Ruler" "action" "toggle" "type" "check" "pref" "ruler" "cls" "menu__desktop")
+  (dict "label" "&Document Map" "action" "toggle" "type" "check" "pref" "docmap" "disabled" (not $hasToc))
+  (dict "label" "Formatting &Marks" "action" "toggle" "type" "check" "pref" "marks")
+  (dict "sep" true)
+  (dict "label" "Full Scr&een" "action" "fullscreen")
+  (dict "label" "Dar&k Mode" "action" "toggle" "type" "check" "pref" "dark")
+-}}
+
+{{- $insert := slice
+  (dict "label" "&Break..." "disabled" true)
+  (dict "label" "Page N&umbers..." "disabled" true)
+  (dict "label" "Date and &Time..." "disabled" true)
+  (dict "label" "&Symbol..." "disabled" true)
+  (dict "sep" true)
+  (dict "label" "&WordArt..." "action" "wordart")
+  (dict "label" "&Picture" "disabled" true)
+  (dict "sep" true)
+  (dict "label" "Hyperl&ink..." "action" "hyperlink")
+-}}
+
+{{- $format := slice
+  (dict "label" "&Font..." "action" "font")
+  (dict "label" "&Paragraph..." "disabled" true)
+  (dict "label" "Bullets and &Numbering..." "disabled" true)
+  (dict "label" "&Borders and Shading..." "disabled" true)
+  (dict "label" "&Columns..." "disabled" true)
+  (dict "label" "Change Cas&e..." "disabled" true)
+  (dict "sep" true)
+  (dict "label" "&AutoFormat..." "disabled" true)
+  (dict "label" "&Style..." "disabled" true)
+-}}
+
+{{- $tools := slice
+  (dict "label" "&Spelling and Grammar..." "disabled" true)
+  (dict "label" "&Word Count..." "action" "wordcount")
+  (dict "label" "&AutoCorrect..." "disabled" true)
+  (dict "sep" true)
+  (dict "label" "Accessibilit&y Options..." "action" "a11y")
+  (dict "label" "&Customize..." "disabled" true)
+  (dict "label" "&Options..." "action" "font")
+-}}
+
+{{- $table := slice
+  (dict "label" "Dra&w Table" "disabled" true)
+  (dict "label" "&Insert Table..." "disabled" true)
+  (dict "label" "&Delete Cells..." "disabled" true)
+  (dict "label" "&Merge Cells" "disabled" true)
+  (dict "sep" true)
+  (dict "label" "Table AutoFor&mat..." "disabled" true)
+  (dict "label" "&Sort..." "disabled" true)
+  (dict "label" "Show &Gridlines" "disabled" true)
+-}}
+
+{{- $window := slice
+  (dict "label" "&New Window" "href" .RelPermalink "newtab" true)
+  (dict "label" "&Arrange All" "disabled" true)
+  (dict "label" "&Split" "disabled" true)
+  (dict "sep" true)
+  (dict "label" (printf "&1 %s" (partial "w97/doc-title.html" .)) "type" "radio" "pref" "current")
+-}}
+
+{{- $help := slice
+  (dict "label" "Microsoft Word &Help" "href" $aboutURL "disabled" (not $aboutURL))
+  (dict "label" "Show the &Office Assistant" "action" "toggle" "type" "check" "pref" "assistant")
+  (dict "label" "&What's This?" "disabled" true)
+  (dict "label" "WordPerfect Help..." "disabled" true)
+  (dict "sep" true)
+  (dict "label" (printf "About %s..." (site.Params.word97.authorName | default (index (split (partial "w97/author.html" site.Home) " ") 0))) "href" $aboutURL "disabled" (not $aboutURL))
+  (dict "label" "&About Microsoft Word" "action" "about")
+-}}
+
+{{- $menus := slice
+  (dict "id" "file" "label" "&File" "items" $file)
+  (dict "id" "edit" "label" "&Edit" "items" $edit)
+  (dict "id" "view" "label" "&View" "items" $view)
+  (dict "id" "insert" "label" "&Insert" "items" $insert)
+  (dict "id" "format" "label" "F&ormat" "items" $format "wide" true)
+  (dict "id" "tools" "label" "&Tools" "items" $tools)
+  (dict "id" "table" "label" "T&able" "items" $table "wide" true)
+  (dict "id" "window" "label" "&Window" "items" $window "wide" true)
+  (dict "id" "help" "label" "&Help" "items" $help)
+-}}
+
+<nav class="menubar-wrap" aria-label="Application menu">
+  <ul class="menubar" role="menubar" aria-label="Menu bar" id="menubar">
+    {{- range $i, $m := $menus }}
+    {{- $parts := split $m.label "&" }}
+    {{- $rest := index $parts 1 }}
+    <li role="none" class="menubar__item{{ if $m.wide }} menubar__item--wide{{ end }}">
+      <button type="button" role="menuitem" class="menubar__btn" id="menu-{{ $m.id }}" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-{{ $m.id }}-list" data-mnemonic="{{ substr $rest 0 1 | lower }}" tabindex="{{ if eq $i 0 }}0{{ else }}-1{{ end }}">
+        {{- index $parts 0 }}<u>{{ substr $rest 0 1 }}</u>{{ substr $rest 1 -}}
+      </button>
+      <ul class="menu window" role="menu" id="menu-{{ $m.id }}-list" aria-labelledby="menu-{{ $m.id }}" hidden>
+        {{- range $m.items }}
+        {{ partial "w97/menu-item.html" . }}
+        {{- end }}
+      </ul>
+    </li>
+    {{- end }}
+  </ul>
+</nav>

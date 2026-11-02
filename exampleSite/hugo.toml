@@ -1,0 +1,48 @@
+baseURL = "https://example.org/"
+languageCode = "en-us"
+title = "Jane Doe"
+theme = "hugo-word97"
+themesDir = "../.."
+
+[pagination]
+  pagerSize = 10
+
+[params]
+  description = "Notes, projects and other rabbit holes"
+  author = "Jane Doe"
+
+  [[params.social]]
+    name = "GitHub"
+    url = "https://github.com/"
+    icon = "github"
+  [[params.social]]
+    name = "YouTube"
+    url = "https://www.youtube.com/"
+    icon = "youtube"
+  [[params.social]]
+    name = "LinkedIn"
+    url = "https://www.linkedin.com/"
+    icon = "linkedin"
+
+  [params.word97]
+    documentName = "Jane Doe's Blog"
+    aboutPage = "/about"
+    topics = ["Homelab", "Electronics", "Software", "Things that broke"]
+
+[menus]
+  [[menus.main]]
+    name = "about/"
+    pageRef = "/about"
+    weight = 1
+  [[menus.main]]
+    name = "posts/"
+    pageRef = "/posts"
+    weight = 2
+  [[menus.main]]
+    name = "tags/"
+    pageRef = "/tags"
+    weight = 3
+
+# Recommended: class-based highlighting (light "Visual Studio" palette, follows High Contrast).
+[markup.highlight]
+  noClasses = false

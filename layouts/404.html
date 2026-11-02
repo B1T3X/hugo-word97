@@ -1,0 +1,18 @@
+{{ define "main" }}
+<div class="window error-box" role="alert">
+  <div class="titlebar"><span class="titlebar__title">Microsoft Word</span></div>
+  <div class="dialog__body dialog__body--msg">
+    {{ partial "w97/icon.html" (dict "name" "error" "size" 32) }}
+    <div>
+      <h1 class="error-box__title">The document name or path is not valid.</h1>
+      <p>Word cannot find the file you asked for. Check the spelling, or try one of these:</p>
+      <ul>
+        <li>Open the <a href="{{ "/" | relURL }}">home page</a></li>
+        {{- with partial "w97/archive.html" . }}<li>Browse <a href="{{ .RelPermalink }}">My Documents</a></li>{{ end }}
+        <li><button type="button" class="linklike" data-action="find">Search the blog</button></li>
+      </ul>
+    </div>
+  </div>
+  <div class="dialog__buttons"><a class="btn btn--default" href="{{ "/" | relURL }}">OK</a></div>
+</div>
+{{ end }}

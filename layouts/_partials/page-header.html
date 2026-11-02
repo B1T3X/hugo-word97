@@ -1,0 +1,8 @@
+{{- /* Running header of the Word page: site name + navigation. The home page renders its nav under the WordArt title instead. */ -}}
+{{- if not .IsHome }}
+<div class="page__header">
+  <span class="page__header-label" aria-hidden="true">Header</span>
+  <a class="page__site" href="{{ "/" | relURL }}">{{ site.Title }}</a>
+  {{ partial "site-nav.html" . }}
+</div>
+{{- end }}

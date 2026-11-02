@@ -1,0 +1,10 @@
+{{- /* Thumbnail grid of every .webp in static/<folder>, with a Windows-style image viewer. */ -}}
+{{- $folder := .Get "folder" -}}
+{{- $id := printf "pg-%d" .Ordinal -}}
+<div class="photo-gallery" id="{{ $id }}" data-photogallery>
+{{- range $i, $f := readDir (printf "static/%s" $folder) }}
+  {{- if strings.HasSuffix $f.Name ".webp" }}
+  <a href="{{ printf "/%s/%s" $folder $f.Name | relURL }}" class="photo-gallery__item"><img src="{{ printf "/%s/%s" $folder $f.Name | relURL }}" alt="Photo {{ add $i 1 }} from the gallery" loading="lazy" decoding="async"></a>
+  {{- end }}
+{{- end }}
+</div>

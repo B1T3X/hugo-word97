@@ -1,0 +1,9 @@
+{{- /* Returns the document name shown in the title bar, taskbar and dialogs. */ -}}
+{{- $name := site.Params.word97.documentName | default site.Title -}}
+{{- $title := $name -}}
+{{- if and .IsPage .Title -}}
+  {{- $title = .Title -}}
+{{- else if and (not .IsHome) .Title -}}
+  {{- $title = printf "%s - %s" .Title $name -}}
+{{- end -}}
+{{- return $title -}}

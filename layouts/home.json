@@ -1,0 +1,2 @@
+{{- /* Optional: rendered only if the site enables JSON output for the home page. The theme's search uses its own asset. */ -}}
+{{- partial "w97/search-data.html" . | jsonify -}}

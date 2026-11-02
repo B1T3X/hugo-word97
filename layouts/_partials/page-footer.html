@@ -1,0 +1,9 @@
+<footer class="page__footer">
+  <span class="page__header-label" aria-hidden="true">Footer</span>
+  <p class="page__copy">
+    &copy; {{ now.Year }} {{ partial "w97/author.html" site.Home }}
+    {{- range site.Params.word97.footerLinks }} <span aria-hidden="true">|</span> <a href="{{ .url | relURL }}">{{ .name }}</a>{{ end }}
+    {{- with .OutputFormats.Get "RSS" }} <span aria-hidden="true">|</span> <a href="{{ .RelPermalink }}">RSS</a>{{ else }}{{ with site.Home.OutputFormats.Get "RSS" }} <span aria-hidden="true">|</span> <a href="{{ .RelPermalink }}">RSS</a>{{ end }}{{ end }}
+  </p>
+  {{- partial "social-links.html" (dict "class" "social--compact") }}
+</footer>

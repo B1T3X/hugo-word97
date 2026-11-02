@@ -1,0 +1,26 @@
+{{- /* Previous/next post (newest-first list, private posts excluded). */ -}}
+{{- $posts := partial "w97/posts.html" . -}}
+{{- $idx := -1 -}}
+{{- range $i, $p := $posts }}{{ if eq $p.Permalink $.Permalink }}{{ $idx = $i }}{{ end }}{{ end -}}
+{{- if ge $idx 0 }}
+{{- $newer := false -}}
+{{- $older := false -}}
+{{- if gt $idx 0 }}{{ $newer = index $posts (sub $idx 1) }}{{ end -}}
+{{- if lt (add $idx 1) (len $posts) }}{{ $older = index $posts (add $idx 1) }}{{ end -}}
+{{- if or $newer $older }}
+<nav class="post-nav" aria-label="More posts">
+  {{- with $older }}
+  <a class="post-nav__link post-nav__link--prev" href="{{ .RelPermalink }}" rel="prev">
+    <span class="post-nav__dir">&laquo; Previous document</span>
+    <span class="post-nav__title">{{ partial "w97/icon.html" (dict "name" "word") }}{{ .Title }}.doc</span>
+  </a>
+  {{- end }}
+  {{- with $newer }}
+  <a class="post-nav__link post-nav__link--next" href="{{ .RelPermalink }}" rel="next">
+    <span class="post-nav__dir">Next document &raquo;</span>
+    <span class="post-nav__title">{{ partial "w97/icon.html" (dict "name" "word") }}{{ .Title }}.doc</span>
+  </a>
+  {{- end }}
+</nav>
+{{- end }}
+{{- end }}

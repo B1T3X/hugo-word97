@@ -1,0 +1,5 @@
+{{- /* Author name for a page (or the site when passed site.Home): params.author as a string or {name: ...}, falling back to site.Title. */ -}}
+{{- $a := .Params.author | default site.Params.author -}}
+{{- if reflect.IsMap $a }}{{ $a = $a.name }}{{ end -}}
+{{- if reflect.IsSlice $a }}{{ $a = delimit $a ", " }}{{ end -}}
+{{- return ($a | default site.Title) -}}

@@ -1,0 +1,16 @@
+{{- /* Windows 98 desktop + taskbar, revealed when the Word window is minimized, restored or closed. */ -}}
+<div class="desktop" id="desktop" aria-hidden="true">
+  <button type="button" class="desktop__icon" data-action="restore-window" tabindex="-1">
+    {{- partial "w97/icon.html" (dict "name" "word" "size" 32) -}}
+    <span>{{ site.Params.word97.documentName | default site.Title }}.doc</span>
+  </button>
+  <div class="taskbar">
+    <span class="taskbar__start"><span class="taskbar__flag"></span><b>Start</b></span>
+    <span class="taskbar__sep"></span>
+    <button type="button" class="taskbar__task" data-action="restore-window" tabindex="-1">
+      {{- partial "w97/icon.html" (dict "name" "word") -}}
+      <span>{{ .title }} - Microsoft Word</span>
+    </button>
+    <span class="taskbar__tray"><time class="taskbar__clock" id="taskbar-clock"></time></span>
+  </div>
+</div>

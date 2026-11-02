@@ -1,0 +1,15 @@
+{{- /*
+  Decorative Windows 98 vertical scrollbar that mirrors the native page scroll.
+  Native scrolling (wheel, keyboard, touch, assistive tech) keeps working; this
+  only renders on wide screens once JS has initialised it.
+*/ -}}
+<div class="vscroll" id="vscroll" aria-hidden="true">
+  <span class="sb-btn sb-btn--up" data-scroll="-1"></span>
+  <span class="vscroll__track" id="vscroll-track"><span class="vscroll__thumb" id="vscroll-thumb"></span></span>
+  <span class="sb-btn sb-btn--down" data-scroll="1"></span>
+  <span class="vscroll__browse">
+    <span class="sb-btn sb-btn--prev" data-browse="-1" title="Previous Heading"></span>
+    <span class="sb-btn sb-btn--select" data-browse="0" title="Top of Document"></span>
+    <span class="sb-btn sb-btn--next" data-browse="1" title="Next Heading"></span>
+  </span>
+</div>

@@ -1,0 +1,14 @@
+{{ define "main" }}
+{{- $sections := partial "w97/sections.html" . -}}
+{{- $isMain := in $sections .Section -}}
+{{- $pages := where .RegularPages "Params.private" "!=" true -}}
+{{- $pager := .Paginate $pages.ByDate.Reverse -}}
+<header class="folder-head">
+  <h1 class="folder-head__title">{{ partial "w97/icon.html" (dict "name" "folder" "size" 32) }}<span>{{ if $isMain }}{{ site.Params.word97.archiveTitle | default "My Documents" }}{{ else }}{{ .Title }}{{ end }}</span></h1>
+  <p class="folder-head__path" aria-label="Location"><span class="field field--out">C:\My Documents{{ if not $isMain }}\{{ .Title }}{{ end }}</span></p>
+  {{- if $isMain }}{{ with .Title }}<p class="folder-head__sub">{{ . }} &middot; {{ $pager.TotalNumberOfElements }} documents, newest first</p>{{ end }}{{ end }}
+</header>
+{{- with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+{{ partial "doc-list.html" (dict "pages" $pager.Pages) }}
+{{ partial "pagination.html" $pager }}
+{{ end }}

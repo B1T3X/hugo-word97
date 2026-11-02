@@ -1,0 +1,4 @@
+{{- /* The About page from params.word97.aboutPage (path like "/about" or "/pages/about"). Returns nil when unset or missing. */ -}}
+{{- $p := false -}}
+{{- with site.Params.word97.aboutPage }}{{ with site.GetPage . }}{{ $p = . }}{{ end }}{{ end -}}
+{{- return $p -}}

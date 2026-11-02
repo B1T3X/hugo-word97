@@ -1,0 +1,15 @@
+{{- $p := . -}}
+{{- $shown := false -}}
+{{- range $tax := slice "categories" "tags" }}{{ with index $p.Params $tax }}{{ $shown = true }}{{ end }}{{ end -}}
+{{- if $shown }}
+<dl class="doc__tax">
+  {{- range $tax := slice "categories" "tags" }}
+  {{- with $p.GetTerms $tax }}
+  <div>
+    <dt>{{ if eq $tax "tags" }}Keywords{{ else }}Category{{ end }}:</dt>
+    <dd><ul>{{ range . }}<li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>{{ end }}</ul></dd>
+  </div>
+  {{- end }}
+  {{- end }}
+</dl>
+{{- end }}

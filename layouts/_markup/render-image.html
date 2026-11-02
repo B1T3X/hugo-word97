@@ -1,0 +1,11 @@
+{{- $src := .Destination -}}
+{{- $w := "" }}{{ $h := "" -}}
+{{- with .Page.Resources.GetMatch .Destination -}}
+  {{- $src = .RelPermalink -}}
+  {{- if and (ne .MediaType.SubType "svg") (ne .MediaType.SubType "gif") }}{{ $w = .Width }}{{ $h = .Height }}{{ end -}}
+{{- end -}}
+{{- if .Title -}}
+<figure class="figure"><img src="{{ $src | safeURL }}" alt="{{ .PlainText }}" loading="lazy" decoding="async"{{ with $w }} width="{{ . }}"{{ end }}{{ with $h }} height="{{ . }}"{{ end }}><figcaption>{{ .Title | markdownify }}</figcaption></figure>
+{{- else -}}
+<img src="{{ $src | safeURL }}" alt="{{ .PlainText }}" loading="lazy" decoding="async"{{ with $w }} width="{{ . }}"{{ end }}{{ with $h }} height="{{ . }}"{{ end }}>
+{{- end -}}

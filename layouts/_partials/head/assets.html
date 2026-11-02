@@ -1,0 +1,37 @@
+{{- /* Apply saved preferences before first paint to avoid a flash of the wrong theme. */}}
+<script>
+(function () {
+  var d = document.documentElement, s;
+  d.classList.remove('no-js'); d.classList.add('js');
+  function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  s = get('theme');
+  if (s === 'dark' || (!s && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches)) d.classList.add('dark');
+  if (get('a11y-contrast') === '1') d.classList.add('a11y-high-contrast');
+  if (get('a11y-underline') === '1') d.classList.add('a11y-underline-links');
+  s = parseInt(get('a11y-font-scale'), 10); if (s) d.style.fontSize = s + '%';
+  s = get('w97-view'); if (s === 'normal' || s === 'online') d.setAttribute('data-view', s);
+  s = get('w97-font'); if (s) d.setAttribute('data-doc-font', s);
+  s = get('w97-size'); if (s) d.style.setProperty('--doc-pt', s);
+  if (get('w97-zoom')) d.style.setProperty('--doc-zoom', get('w97-zoom') / 100);
+  if (get('w97-marks') === '1') d.classList.add('show-marks');
+  if (get('w97-ruler') === '0') d.classList.add('hide-ruler');
+  if (get('w97-tb-standard') === '0') d.classList.add('hide-tb-standard');
+  if (get('w97-tb-formatting') === '0') d.classList.add('hide-tb-formatting');
+  if (get('w97-docmap') === '1') d.classList.add('show-docmap');
+  s = get('w97-wordart'); if (s) d.setAttribute('data-title-style', s);
+  s = get('w97-align'); if (s) d.setAttribute('data-align', s);
+})();
+</script>
+{{- $css := slice
+    (resources.Get "css/base.css")
+    (resources.Get "css/windows.css")
+    (resources.Get "css/chrome.css")
+    (resources.Get "css/document.css")
+    (resources.Get "css/syntax.css")
+    (resources.Get "css/wordart.css")
+    (resources.Get "css/themes.css")
+    (resources.Get "css/responsive.css")
+    (resources.Get "css/print.css")
+  | resources.Concat "css/word97.css" }}
+{{- if not hugo.IsServer }}{{ $css = $css | minify | fingerprint }}{{ end }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}"{{ with $css.Data.Integrity }} integrity="{{ . }}"{{ end }}>

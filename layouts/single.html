@@ -1,0 +1,32 @@
+{{ define "main" }}
+{{- $sections := partial "w97/sections.html" . -}}
+{{- $isPost := in $sections .Section -}}
+<article class="doc">
+  <header class="doc__header">
+    <h1 class="doc__title">{{ .Title }}</h1>
+    {{- if $isPost }}{{ partial "post-meta.html" . }}{{ end }}
+  </header>
+
+  {{- with .Params.cover.image }}
+    {{- $alt := $.Params.cover.alt | default "" }}
+    {{- if eq $alt "TODO" }}{{ $alt = "" }}{{ end }}
+    {{- with $.Resources.Get . }}
+      {{- $img := .Process "resize 900x webp q80" }}
+  <figure class="doc__cover"><img src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="{{ $alt }}"></figure>
+    {{- else }}
+      {{- if and (ne . "TODO") (or (hasPrefix . "/") (hasPrefix . "http")) }}
+  <figure class="doc__cover"><img src="{{ . }}" alt="{{ $alt }}"></figure>
+      {{- end }}
+    {{- end }}
+  {{- end }}
+
+  <div class="doc__content prose">
+    {{ .Content }}
+  </div>
+
+  {{- if $isPost }}
+  {{- partial "post-taxonomies.html" . }}
+  {{- partial "post-nav.html" . }}
+  {{- end }}
+</article>
+{{ end }}

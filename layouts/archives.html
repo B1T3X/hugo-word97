@@ -1,0 +1,15 @@
+{{ define "main" }}
+{{- $posts := partial "w97/posts.html" . -}}
+<header class="folder-head">
+  <h1 class="folder-head__title">{{ partial "w97/icon.html" (dict "name" "folder" "size" 32) }}<span>{{ .Title | default "Archives" }}</span></h1>
+  <p class="folder-head__path" aria-label="Location"><span class="field field--out">C:\My Documents\By Year</span></p>
+  <p class="folder-head__sub">{{ len $posts }} documents</p>
+</header>
+{{- with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+{{- range $posts.GroupByDate "2006" }}
+<section class="archive-year" aria-labelledby="y-{{ .Key }}">
+  <h2 class="archive-year__title" id="y-{{ .Key }}">{{ partial "w97/icon.html" (dict "name" "folder") }}{{ .Key }}</h2>
+  {{ partial "doc-list.html" (dict "pages" .Pages "heading" 3) }}
+</section>
+{{- end }}
+{{ end }}

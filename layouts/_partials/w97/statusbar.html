@@ -1,0 +1,45 @@
+{{- /*
+  Word-style status bar. Page/position values are computed by JS from the real
+  rendered height of the document (in 11-inch pages); they stay empty without JS.
+*/ -}}
+<footer class="statusbar" id="statusbar">
+  <div class="hscroll" aria-hidden="true">
+    <div class="viewbtns">
+      <button type="button" class="viewbtn" data-action="view" data-pref="view" data-value="normal" tabindex="-1" data-tip="Normal View"><span class="vb vb--normal"></span></button>
+      <button type="button" class="viewbtn" data-action="view" data-pref="view" data-value="online" tabindex="-1" data-tip="Online Layout View"><span class="vb vb--online"></span></button>
+      <button type="button" class="viewbtn" data-action="view" data-pref="view" data-value="page" tabindex="-1" data-tip="Page Layout View"><span class="vb vb--page"></span></button>
+      <button type="button" class="viewbtn" disabled tabindex="-1" data-tip="Outline View"><span class="vb vb--outline"></span></button>
+    </div>
+    <div class="hscroll__bar">
+      <span class="sb-btn sb-btn--left"></span>
+      <span class="hscroll__track"><span class="hscroll__thumb"></span></span>
+      <span class="sb-btn sb-btn--right"></span>
+    </div>
+  </div>
+  <div class="statusbar__row">
+    <button type="button" class="statusbar__a11y" data-action="a11y" aria-haspopup="dialog" aria-label="Accessibility options" data-tip="Accessibility Options">
+      {{- partial "w97/icon.html" (dict "name" "a11y") -}}
+    </button>
+    <button type="button" class="statusbar__dark" data-action="toggle" data-pref="dark" aria-pressed="false" data-tip="Switch between light and dark mode">
+      {{- partial "w97/icon.html" (dict "name" "moon" "class" "ico-moon") -}}
+      {{- partial "w97/icon.html" (dict "name" "sun" "class" "ico-sun") -}}
+      <span>Dark mode</span>
+    </button>
+    <span class="sb-cell sb-cell--page js-only"><span data-sb="page">Page 1</span>&ensp;Sec 1&ensp;<span data-sb="pages">1/1</span></span>
+    <span class="sb-cell sb-cell--at js-only" data-sb="at">At 1"</span>
+    {{- if and .IsPage (gt .WordCount 0) }}
+    <span class="sb-cell sb-cell--words">{{ lang.FormatNumber 0 .WordCount }} words</span>
+    <span class="sb-cell sb-cell--time">{{ .ReadingTime }} min read</span>
+    {{- else if .IsHome }}
+    <span class="sb-cell sb-cell--words">{{ len (partial "w97/posts.html" .) }} documents</span>
+    {{- else if or .IsSection (eq .Kind "term") }}
+    <span class="sb-cell sb-cell--words">{{ len .RegularPages }} documents</span>
+    {{- end }}
+    {{- if and .IsPage (not .Date.IsZero) }}
+    <span class="sb-cell sb-cell--date"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format ":date_medium" }}</time></span>
+    {{- end }}
+    <span class="sb-cell sb-cell--fill"></span>
+    <span class="sb-modes" aria-hidden="true"><span>REC</span><span>TRK</span><span>EXT</span><span>OVR</span><span>WPH</span></span>
+    <span class="sb-cell sb-cell--book" aria-hidden="true"><span class="sb-book"></span></span>
+  </div>
+</footer>

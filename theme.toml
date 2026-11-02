@@ -1,0 +1,12 @@
+name = "Word 97"
+license = "MIT"
+licenselink = "https://opensource.org/licenses/MIT"
+description = "A blog theme that looks like Microsoft Word 97 running on Windows 98: beveled chrome, working menus, WordArt headings and a paperclip assistant. Not affiliated with Microsoft."
+homepage = "https://orelfichman.com"
+tags = ["blog", "retro", "windows", "personal", "responsive", "dark mode", "accessible"]
+features = ["WordArt partial and shortcode", "dark mode", "client-side search", "print stylesheet", "pagination", "RSS", "Open Graph"]
+min_version = "0.146.0"
+
+[author]
+  name = "Orel Fichman"
+  homepage = "https://orelfichman.com"

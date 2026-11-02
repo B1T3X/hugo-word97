@@ -1,0 +1,4 @@
+{{- /* Published, non-private regular pages from the main sections, newest first. */ -}}
+{{- $pages := where site.RegularPages "Section" "in" (partial "w97/sections.html" .) -}}
+{{- $pages = where $pages "Params.private" "!=" true -}}
+{{- return $pages.ByDate.Reverse -}}
