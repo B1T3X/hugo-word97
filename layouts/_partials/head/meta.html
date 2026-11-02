@@ -3,7 +3,7 @@
 {{- $pageTitle := cond .IsHome (.Title | default site.Title) (printf "%s - %s" site.Title .Title) }}
 <title>{{ $pageTitle }}</title>
 {{- $desc := "" }}
-{{- with .Description }}{{ $desc = . }}{{ else }}{{ if .IsPage }}{{ $desc = .Summary | plainify | strings.TrimSpace | truncate 160 }}{{ else }}{{ $desc = site.Params.description }}{{ end }}{{ end }}
+{{- with .Description }}{{ $desc = . }}{{ else }}{{ if .IsPage }}{{ $desc = .Summary | plainify | htmlUnescape | strings.TrimSpace | truncate 160 }}{{ else }}{{ $desc = site.Params.description }}{{ end }}{{ end }}
 {{- with $desc }}
 <meta name="description" content="{{ . }}">
 {{- end }}

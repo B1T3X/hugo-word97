@@ -12,13 +12,13 @@
   {{- with $older }}
   <a class="post-nav__link post-nav__link--prev" href="{{ .RelPermalink }}" rel="prev">
     <span class="post-nav__dir">&laquo; Previous document</span>
-    <span class="post-nav__title">{{ partial "w97/icon.html" (dict "name" "word") }}{{ .Title }}.doc</span>
+    <span class="post-nav__title">{{ partial "w97/icon.html" (dict "name" "word") }}{{ .Title }}</span>
   </a>
   {{- end }}
   {{- with $newer }}
   <a class="post-nav__link post-nav__link--next" href="{{ .RelPermalink }}" rel="next">
     <span class="post-nav__dir">Next document &raquo;</span>
-    <span class="post-nav__title">{{ partial "w97/icon.html" (dict "name" "word") }}{{ .Title }}.doc</span>
+    <span class="post-nav__title">{{ partial "w97/icon.html" (dict "name" "word") }}{{ .Title }}</span>
   </a>
   {{- end }}
 </nav>

@@ -5,7 +5,7 @@
       "t" .Title
       "u" .RelPermalink
       "d" (cond .Date.IsZero "" (.Date.Format "2006-01-02"))
-      "s" (.Description | default (.Summary | plainify | strings.TrimSpace | truncate 200))
+      "s" (.Description | default (.Summary | plainify | htmlUnescape | strings.TrimSpace | truncate 200))
       "g" (.Params.tags | default slice)
       "c" (.Plain | strings.TrimSpace | truncate 6000 "")
     ) -}}

@@ -6,7 +6,7 @@
 
 {{- $mru := slice -}}
 {{- range $i, $post := first 4 $posts -}}
-  {{- $mru = $mru | append (dict "label" (printf "&%d %s.doc" (add $i 1) $post.Title) "href" $post.RelPermalink "cls" "menu__mru") -}}
+  {{- $mru = $mru | append (dict "label" (printf "&%d %s" (add $i 1) $post.Title) "href" $post.RelPermalink "cls" "menu__mru") -}}
 {{- end -}}
 
 {{- $file := slice
