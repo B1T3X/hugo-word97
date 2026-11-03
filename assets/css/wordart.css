@@ -34,6 +34,22 @@
   transform-origin: 50% 60%;
   padding: 0 .12em .14em 0;
 }
+/* Outline layer, between the extrusion and the face. It's filled and stroked in
+   one color at double width, so only the outer half shows around the face, and
+   the seams variable fonts (common phone fallbacks) draw where glyph contours
+   overlap are invisible. A stroke on the face itself would show those seams. */
+.wordart__face::before,
+.wordart__ch::before {
+  content: attr(data-text);
+  content: attr(data-text) / "";
+  position: absolute;
+  inset: 0;
+  padding: inherit;
+  color: var(--wa-stroke-color);
+  -webkit-text-stroke: calc(var(--wa-stroke) * 2) var(--wa-stroke-color);
+  text-shadow: none;
+  pointer-events: none;
+}
 .wordart__face::after {
   content: attr(data-text);
   content: attr(data-text) / "";
@@ -44,7 +60,6 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  -webkit-text-stroke: var(--wa-stroke) var(--wa-stroke-color);
   text-shadow: none;
   pointer-events: none;
 }
@@ -98,12 +113,14 @@
 .wordart--wave { --wa-side: #0b2c9a; }
 .wordart--wave .wordart__face,
 .wordart--rainbow-wave .wordart__face { padding: .25em .2em .3em; }
-.wordart__face--letters::after { content: none; }
+.wordart__face--letters::before, .wordart__face--letters::after { content: none; }
 .wordart__ch, .wordart__sp { position: relative; display: inline-block; }
 .wordart__sp { width: .3em; }
 .wordart__ch {
   color: #0b2c9a;
   text-shadow: -.03em -.03em 0 #0b2c9a, -.05em -.05em 0 #0b2c9a, -.07em -.06em 0 #0b2c9a;
+  --wa-stroke: .02em;
+  --wa-stroke-color: #0b2c9a;
   transform: translateY(calc(sin(var(--i) * 0.9rad) * .16em)) scaleY(1.25);
 }
 .wordart__ch::after {
@@ -111,7 +128,6 @@
   content: attr(data-text) / "";
   position: absolute; inset: 0;
   color: #5bc8ff;
-  -webkit-text-stroke: .02em #0b2c9a;
   text-shadow: none;
 }
 
@@ -122,10 +138,10 @@
   --dark: hsl(var(--h) 85% 26%);
   color: var(--dark);
   text-shadow: -.03em -.03em 0 var(--dark), -.05em -.05em 0 var(--dark), -.07em -.06em 0 var(--dark);
+  --wa-stroke-color: var(--dark);
 }
 .wordart--rainbow-wave .wordart__ch::after {
   color: hsl(var(--h) 95% 52%);
-  -webkit-text-stroke: .02em var(--dark);
 }
 
 /* Rainbow ("freedom") */
@@ -200,9 +216,10 @@
 
 /* Plain fallbacks */
 @media (forced-colors: active) {
-  .wordart__face { text-shadow: none; color: CanvasText; transform: none; }
-  .wordart__face::after { display: none; }
+  .wordart__face, .wordart__ch { text-shadow: none; color: CanvasText; transform: none; }
+  .wordart__face::before, .wordart__face::after, .wordart__ch::before, .wordart__ch::after { display: none; }
 }
 html.a11y-high-contrast .wordart__face, html.a11y-high-contrast .wordart__ch { color: #ff0; text-shadow: none; transform: none; }
-html.a11y-high-contrast .wordart__face::after, html.a11y-high-contrast .wordart__ch::after { display: none; }
+html.a11y-high-contrast .wordart__face::before, html.a11y-high-contrast .wordart__face::after,
+html.a11y-high-contrast .wordart__ch::before, html.a11y-high-contrast .wordart__ch::after { display: none; }
 html.a11y-high-contrast .wordart-burst__star { display: none; }
