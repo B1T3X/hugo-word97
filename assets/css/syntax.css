@@ -1,8 +1,8 @@
 /* Syntax highlighting (Hugo/Chroma classes; markup.highlight.noClasses = false).
-   Chroma "vs" (Visual Studio 97 vibes); the page stays white in dark mode.
+   Chroma "vs" (Visual Studio 97 vibes), with a dark variant for dark mode.
    Regenerate: hugo gen chromastyles --style=vs */
 
-.chroma { background-color:#fff; }
+.chroma { background-color:var(--code-bg); }
 .chroma .lnlinks { outline:none;text-decoration:none;color:inherit }
 .chroma .lntd { vertical-align:top;padding:0;margin:0;border:0; }
 .chroma .lntable { border-spacing:0;padding:0;margin:0;border:0; }
@@ -45,6 +45,16 @@
 .chroma .gp { font-weight:bold }
 .chroma .gs { font-weight:bold }
 .chroma .gu { font-weight:bold }
+
+/* Dark mode (screen only; printing uses the light colors above). */
+@media screen {
+  html.dark:not(.a11y-high-contrast) .chroma .hl { background-color:#3a3a46 }
+  html.dark:not(.a11y-high-contrast) .chroma :is(.lnt, .ln) { color:#8a8a94 }
+  html.dark:not(.a11y-high-contrast) .chroma :is(.k, .kc, .kd, .kn, .kp, .kr, .ow, .cp, .cpf) { color:#6cb4ff }
+  html.dark:not(.a11y-high-contrast) .chroma :is(.kt, .nc) { color:#4ec9b0 }
+  html.dark:not(.a11y-high-contrast) .chroma :is(.s, .sa, .sb, .sc, .dl, .sd, .s2, .se, .sh, .si, .sx, .sr, .s1, .ss) { color:#e8a07c }
+  html.dark:not(.a11y-high-contrast) .chroma :is(.c, .ch, .cm, .c1, .cs) { color:#7fbf6a }
+}
 
 /* High contrast: keep structure readable, drop colour coding. */
 html.a11y-high-contrast .chroma, html.a11y-high-contrast .chroma * { color: #fff !important; background: #000 !important; }

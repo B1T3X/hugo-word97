@@ -2,8 +2,8 @@
    hugo-word97 / themes: "Blue background, white text" (dark) and High Contrast
    ========================================================================== */
 
-/* Dark mode: darker Windows scheme for the application chrome and workspace.
-   The document itself stays white paper with black ink. */
+/* Dark mode: darker Windows scheme for the application chrome and workspace,
+   and dark paper with light ink for the document (light again when printed). */
 html.dark {
   --face: #3c3c44;
   --hilite: #6c6c78;
@@ -22,18 +22,34 @@ html.dark {
 html.dark .ruler__text, html.dark .ruler__num { background-color: #d8d8d8; }
 html.dark .tb-btn:disabled .ico { filter: brightness(0) invert(.45); }
 
-/* Restore the light Windows scheme inside the page (explorer lists, code panels, buttons). */
-html.dark:not(.a11y-high-contrast) .page {
-  color-scheme: light;
-  --face: #c0c0c0;
-  --hilite: #fff;
-  --light: #dfdfdf;
-  --shadow: #808080;
-  --text: #000;
-  --text-disabled: #808080;
-  --text-muted: #555;
-  --field: #fff;
-  --sel-bg: #000080;
+@media screen {
+  html.dark:not(.a11y-high-contrast) {
+    --paper: #26262e;
+    --ink: #e4e4e8;
+    --ink-soft: #b4b4bc;
+    --link: #8cb4ff;
+    --visited: #c8a2ff;
+    --rule: #6c6c78;
+    --code-bg: #1c1c24;
+    --inline-code-bg: #383842;
+  }
+  html.dark:not(.a11y-high-contrast) .page { color-scheme: dark; }
+}
+
+/* Printing a dark-mode page: the light Windows scheme inside the page. */
+@media print {
+  html.dark .page {
+    color-scheme: light;
+    --face: #c0c0c0;
+    --hilite: #fff;
+    --light: #dfdfdf;
+    --shadow: #808080;
+    --text: #000;
+    --text-disabled: #808080;
+    --text-muted: #555;
+    --field: #fff;
+    --sel-bg: #000080;
+  }
 }
 
 /* Accessibility: Windows "High Contrast Black". */
