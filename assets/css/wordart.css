@@ -92,7 +92,8 @@
 
 /* Wave ("MakeWordArt") */
 .wordart--wave { --wa-side: #0b2c9a; }
-.wordart--wave .wordart__face { padding: .25em .2em .3em; }
+.wordart--wave .wordart__face,
+.wordart--rainbow-wave .wordart__face { padding: .25em .2em .3em; }
 .wordart__face--letters::after { content: none; }
 .wordart__ch, .wordart__sp { position: relative; display: inline-block; }
 .wordart__sp { width: .3em; }
@@ -108,6 +109,19 @@
   color: #5bc8ff;
   -webkit-text-stroke: .02em #0b2c9a;
   text-shadow: none;
+}
+
+/* Rainbow wave: the wave shape, one hue per letter from red to violet */
+.wordart--rainbow-wave { --wa-side: #3a1a5a; }
+.wordart--rainbow-wave .wordart__ch {
+  --h: calc(var(--i) / max(var(--n) - 1, 1) * 280deg);
+  --dark: hsl(var(--h) 85% 26%);
+  color: var(--dark);
+  text-shadow: -.03em -.03em 0 var(--dark), -.05em -.05em 0 var(--dark), -.07em -.06em 0 var(--dark);
+}
+.wordart--rainbow-wave .wordart__ch::after {
+  color: hsl(var(--h) 95% 52%);
+  -webkit-text-stroke: .02em var(--dark);
 }
 
 /* Rainbow ("freedom") */
@@ -177,7 +191,8 @@
 
 /* Tiles in the WordArt Gallery dialog */
 .wordart--mini { margin: 0; font-size: 19px; }
-.wordart--mini.wordart--wave .wordart__face { padding: 0 .1em; }
+.wordart--mini.wordart--wave .wordart__face,
+.wordart--mini.wordart--rainbow-wave .wordart__face { padding: 0 .1em; }
 
 /* Plain fallbacks */
 @media (forced-colors: active) {

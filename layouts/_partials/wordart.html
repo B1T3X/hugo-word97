@@ -6,7 +6,7 @@
 
   Params:
     text   (required) heading text; stays real, selectable, screen-reader friendly text
-    style  purple | orange | blue | wave | rainbow | chrome | outline | classy | burst  (default "blue")
+    style  purple | orange | blue | wave | rainbow-wave | rainbow | chrome | outline | classy | burst  (default "blue")
     level  1-6 renders <hN>; 0 renders a <p> (decorative, non-heading)                   (default 2)
     class  extra classes on the outer element
     id     id attribute (useful as a link anchor)
@@ -14,7 +14,7 @@
 
   The visual layers (extrusion and gradient face) are drawn with CSS from one
   text node: the face is a pseudo-element whose content is excluded from the
-  accessibility tree. The "wave" style splits letters for the visual layer and
+  accessibility tree. The "wave" and "rainbow-wave" styles split letters for the visual layer and
   keeps a visually hidden copy of the text for assistive tech.
 */ -}}
 {{- $text := .text | default "" -}}
@@ -35,7 +35,7 @@
   </svg>
   {{ $open | safeHTML }}<span class="wordart__face" data-text="{{ $text }}">{{ $text }}</span>{{ printf "</%s>" $tag | safeHTML }}
 </div>
-{{- else if eq $style "wave" -}}
+{{- else if in (slice "wave" "rainbow-wave") $style -}}
 {{- $chars := split $text "" -}}
 {{- $n := len $chars -}}
 {{ $open | safeHTML }}<span class="sr-only">{{ $text }}</span><span class="wordart__face wordart__face--letters" aria-hidden="true" style="--n:{{ $n }}">

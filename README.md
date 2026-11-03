@@ -10,7 +10,7 @@ A Hugo blog theme that looks like a word processor from 1997, running on Windows
 
 - **Window chrome:** title bar with minimize, restore and close (close asks "Do you want to save changes?" and drops you to a Win98 desktop), a menu bar (File, Edit, View, Insert, Format, Tools, Table, Window, Help), Standard and Formatting toolbars, a ruler, a scrollbar and a status bar.
 - **Controls that do something:** New (home), Open (archive), Print, Find (client-side search), Back/Forward, Copy, Select All, reading font, size and zoom, text alignment, formatting marks (¶), Document Map (table of contents), Normal / Online / Page Layout views, Full Screen, Word Count, and File > Properties. Controls that can't apply to a read-only document are shown disabled, as Word did.
-- **WordArt:** nine styles (`purple`, `orange`, `blue`, `wave`, `rainbow`, `chrome`, `outline`, `classy`, `burst`) as a partial and a shortcode. They're drawn with CSS from real text, so headings stay selectable, searchable and screen-reader friendly. Insert > WordArt lets visitors restyle the home page title.
+- **WordArt:** ten styles (`purple`, `orange`, `blue`, `wave`, `rainbow-wave`, `rainbow`, `chrome`, `outline`, `classy`, `burst`) as a partial and a shortcode. They're drawn with CSS from real text, so headings stay selectable, searchable and screen-reader friendly. Insert > WordArt lets visitors restyle the home page title.
 - **Blog parts:** home page with intro, topics, social links and latest posts; an Explorer-style "My Documents" archive with cover thumbnails and pagination; tag and category folders; a by-year archive; and posts with reading time, prev/next links and a Copy button on code blocks.
 - **Dark mode:** a toggle that is always visible in the status bar (also in View and the toolbar). It follows the OS setting until the visitor chooses. The document stays white paper.
 - **Accessibility options:** text size, a Windows-style High Contrast scheme and always-underlined links, opened from the status bar. Semantic landmarks, a skip link, keyboard-operable menus (arrow keys, Home/End, Esc, mnemonic letters), native `<dialog>` focus handling, visible focus and `prefers-reduced-motion` support.
@@ -148,7 +148,7 @@ In Markdown:
 | Param | Values | Default |
 |---|---|---|
 | `text` | the heading text (or use inner content) | (none) |
-| `style` | `purple` `orange` `blue` `wave` `rainbow` `chrome` `outline` `classy` `burst` | `blue` |
+| `style` | `purple` `orange` `blue` `wave` `rainbow-wave` `rainbow` `chrome` `outline` `classy` `burst` | `blue` |
 | `level` | `1`–`6` for `<h1>`–`<h6>`, `0` for a `<p>` | `2` |
 | `class`, `id` | extra class / anchor id | (none) |
 
