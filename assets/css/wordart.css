@@ -67,7 +67,9 @@
 
 /* Orange / yellow extruded ("Free!") */
 .wordart--orange {
-  --wa-font: Impact, "Arial Black", "Haettenschweiler", sans-serif;
+  /* Impact is missing on phones; the fallbacks are heavy condensed faces they do
+     have (iOS: Avenir Next Condensed, Android: Roboto Condensed). */
+  --wa-font: Impact, Haettenschweiler, "Avenir Next Condensed", "sans-serif-condensed", "Arial Narrow", "Arial Black", sans-serif;
   --wa-side: #8a3200;
   --wa-fill: linear-gradient(180deg, #ffff8a 0%, #ffe100 30%, #ff9a00 65%, #ff5a00 100%);
   --wa-solid: #ff9a00;
@@ -75,7 +77,9 @@
   --wa-stroke-color: #a33a00;
   --wa-extrude: .02em .02em 0 #a33a00, .04em .04em 0 #9a3600, .06em .06em 0 #8a3200, .08em .08em 0 #7a2c00, .1em .1em 0 #6b2600, .12em .12em 0 #5c2000;
   --wa-transform: perspective(500px) rotateY(-12deg) rotate(-3deg);
-  font-weight: 400;
+  /* Heaviest real weight of whichever font loads; no faux bold on Impact. */
+  font-weight: 900;
+  font-synthesis: none;
   letter-spacing: .01em;
 }
 
