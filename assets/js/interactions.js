@@ -291,6 +291,29 @@
   window.addEventListener('resize', measure);
   W97.measure = measure;
 
+  /* ---------- WordArt: replay the rainbow-wave hop on hover or tap ---------- */
+  function replayHop(e) {
+    var w = e.target.closest && e.target.closest('.wordart--rainbow-wave');
+    if (!w || !w.getAnimations) return;
+    var anims = w.getAnimations({ subtree: true });
+    if (anims.some(function (a) { return a.playState === 'running'; })) return;
+    anims.forEach(function (a) { a.cancel(); a.play(); });
+  }
+  document.addEventListener('mouseover', replayHop);
+  document.addEventListener('click', replayHop);
+  // Start the first hop when the heading is on screen, not at page load.
+  var hops = document.querySelectorAll('.wordart--rainbow-wave');
+  if (hops.length && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('is-inview'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.6 });
+    hops.forEach(function (el) { io.observe(el); });
+  } else {
+    hops.forEach(function (el) { el.classList.add('is-inview'); });
+  }
+
   syncSelects();
   W97.sync();
   measure();

@@ -144,6 +144,24 @@
   color: hsl(var(--h) 95% 52%);
 }
 
+/* Letters hop in order, spinning once at the top. Plays twice when the heading
+   scrolls into view (under 5 seconds, per WCAG 2.2.2) and again on hover or
+   tap (interactions.js). */
+@keyframes wordart-hop {
+  0% { translate: 0 0; rotate: 0deg; }
+  20% { translate: 0 -.3em; }
+  40% { translate: 0 0; rotate: 360deg; }
+  100% { translate: 0 0; rotate: 360deg; }
+}
+.wordart--rainbow-wave .wordart__ch {
+  animation: wordart-hop 1.5s ease-in-out calc(var(--i) * .07s) 2 both;
+}
+html.js .wordart--rainbow-wave:not(.is-inview) .wordart__ch { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .wordart--rainbow-wave .wordart__ch { animation: none; }
+}
+html.a11y-high-contrast .wordart--rainbow-wave .wordart__ch { animation: none; }
+
 /* Rainbow ("freedom") */
 .wordart--rainbow {
   --wa-font: "Arial Rounded MT Bold", "Arial Black", Arial, sans-serif;
