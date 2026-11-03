@@ -152,6 +152,7 @@ html[data-view="online"] .ruler__paper { visibility: hidden; }
 .home-title .site-nav { font-size: 1.1em; }
 .home-title .site-nav ul { justify-content: center; }
 .home-section { margin-top: 2.4em; }
+.home-section > .wordart { text-align: center; }
 .topics { columns: 2; column-gap: 2em; padding-left: .5in; }
 .topics li { break-inside: avoid; }
 .home-social { text-align: center; }
