@@ -1,11 +1,12 @@
 {{- /* Apply saved preferences before first paint to avoid a flash of the wrong theme. */}}
+{{- $defaultTheme := partial "w97/default-theme.html" . }}
 <script>
 (function () {
-  var d = document.documentElement, s;
+  var d = document.documentElement, s, def = {{ $defaultTheme }};
   d.classList.remove('no-js'); d.classList.add('js');
   function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   s = get('theme');
-  if (s === 'dark' || (!s && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches)) d.classList.add('dark');
+  if (s === 'dark' || (!s && (def === 'dark' || (def === 'auto' && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches)))) d.classList.add('dark');
   if (get('a11y-contrast') === '1') d.classList.add('a11y-high-contrast');
   if (get('a11y-underline') === '1') d.classList.add('a11y-underline-links');
   s = parseInt(get('a11y-font-scale'), 10); if (s) d.style.fontSize = s + '%';

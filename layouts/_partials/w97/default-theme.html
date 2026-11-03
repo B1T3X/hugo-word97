@@ -1,0 +1,4 @@
+{{- /* params.word97.defaultTheme: "auto" (follow the OS), "light" or "dark". */ -}}
+{{- $t := lower (site.Params.word97.defaultTheme | default "auto") -}}
+{{- if not (in (slice "auto" "light" "dark") $t) }}{{ $t = "auto" }}{{ end -}}
+{{- return $t -}}

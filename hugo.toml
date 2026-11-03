@@ -27,6 +27,8 @@
   # Built-in Accessibility Options (status bar button + Tools menu). Set false if you
   # use a third-party accessibility widget instead.
   accessibilityOptions = true
+  # Color scheme for visitors who haven't picked one: "auto" (follow the OS), "light" or "dark".
+  defaultTheme = "auto"
   # Paperclip assistant: false = off until the visitor enables it from Help.
   assistantDefault = false
 

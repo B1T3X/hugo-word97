@@ -9,7 +9,8 @@
 {{- end }}
 <meta name="robots" content="all,follow">
 <meta name="googlebot" content="index,follow,snippet,archive">
-<meta name="color-scheme" content="light dark">
+{{- $defaultTheme := partial "w97/default-theme.html" . }}
+<meta name="color-scheme" content="{{ if eq $defaultTheme "auto" }}light dark{{ else }}{{ $defaultTheme }}{{ end }}">
 <meta name="theme-color" content="#000080">
 <link rel="canonical" href="{{ .Permalink }}">
 {{- with .OutputFormats.Get "RSS" }}
