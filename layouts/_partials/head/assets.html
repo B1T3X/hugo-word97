@@ -1,6 +1,7 @@
 {{- /* Apply saved preferences before first paint to avoid a flash of the wrong theme. */}}
 {{- $defaultTheme := partial "w97/default-theme.html" . }}
 <script>
+window.W97_ASSISTANT_DEFAULT = {{ site.Params.word97.assistantDefault | default false }};
 (function () {
   var d = document.documentElement, s, def = {{ $defaultTheme }};
   d.classList.remove('no-js'); d.classList.add('js');
