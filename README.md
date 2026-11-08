@@ -4,6 +4,8 @@ A Hugo blog theme that looks like a word processor from 1997, running on Windows
 
 ![Screenshot](https://raw.githubusercontent.com/B1T3X/hugo-word97/main/images/screenshot.png)
 
+**[Live demo](https://b1t3x.github.io/hugo-word97/)**
+
 > **Disclaimer:** this is a fan homage. It is not affiliated with, endorsed by, or sponsored by Microsoft. "Microsoft" and "Word" are trademarks of Microsoft Corporation. All icons, the paperclip character and the WordArt effects are original artwork drawn in SVG/CSS; no Microsoft assets are included.
 
 ## Features
