@@ -10,7 +10,8 @@
   function setDesktopInteractive(on) {
     if (!desktop) return;
     desktop.setAttribute('aria-hidden', String(!on));
-    desktop.querySelectorAll('button').forEach(function (b) { b.tabIndex = on ? 0 : -1; });
+    desktop.querySelectorAll('.desktop__icon, .taskbar__start, .taskbar__task').forEach(function (b) { b.tabIndex = on ? 0 : -1; });
+    if (!on && window.W97CloseStart) W97CloseStart(false);
   }
   function winState(state) {
     d.classList.remove('win-min', 'win-closed');
@@ -23,6 +24,20 @@
       setDesktopInteractive(d.classList.contains('win-restored'));
     }
     measure();
+  }
+  /* ---------- Start menu: Shut Down ---------- */
+  function shutDown() {
+    var scr = document.createElement('div');
+    scr.className = 'shutdown';
+    scr.setAttribute('role', 'alertdialog');
+    scr.setAttribute('aria-label', 'Shut Down');
+    scr.tabIndex = 0;
+    scr.innerHTML = '<p>It\'s now safe to turn off<br>your computer.</p><small>Click or press any key to restart.</small>';
+    document.body.appendChild(scr);
+    scr.focus();
+    function restart(e) { if (e) e.preventDefault(); location.reload(); }
+    scr.addEventListener('click', restart);
+    scr.addEventListener('keydown', restart);
   }
   function clock() {
     var c = document.getElementById('taskbar-clock');
@@ -128,6 +143,8 @@
     },
     'restore-window': function () { winState('normal'); var t = document.getElementById('titlebar-title'); if (t) document.querySelector('.tbtn[data-action="minimize"]').focus(); },
     close: function () { W97.openDialog('dlg-close'); },
+    'start-run': function () { W97.message('Windows cannot find \'C:\\WINDOWS\\FUN.EXE\'. Make sure you typed the name correctly, and then try again. (This is a website.)', 'error', 'Run'); },
+    'start-shutdown': shutDown,
     save: function () { W97.message('This document is already saved. (It\'s a website - your changes were never going to stick anyway.)', 'info', 'Microsoft Word'); },
     print: function () { if (window.W97CloseMenus) W97CloseMenus(); setTimeout(function () { window.print(); }, 50); },
     properties: function () { W97.openDialog('dlg-properties'); },

@@ -99,3 +99,64 @@
   document.addEventListener('pointerdown', function (e) { if (openBtn && !bar.contains(e.target)) close(false); });
   window.addEventListener('blur', function () { close(false); });
 })();
+
+/* hugo-word97: taskbar Start menu (menu button pattern). */
+(function () {
+  'use strict';
+  var btn = document.getElementById('start-btn');
+  var menu = document.getElementById('start-menu');
+  if (!btn || !menu) return;
+  function items() { return Array.prototype.slice.call(menu.querySelectorAll('.menu__item')); }
+  function isOpen() { return !menu.hidden; }
+
+  function open(focus) {
+    menu.hidden = false;
+    btn.setAttribute('aria-expanded', 'true');
+    var list = items();
+    if (focus === 'first' && list[0]) list[0].focus();
+    else if (focus === 'last' && list.length) list[list.length - 1].focus();
+  }
+  function close(returnFocus) {
+    if (!isOpen()) return;
+    menu.hidden = true;
+    btn.setAttribute('aria-expanded', 'false');
+    if (returnFocus) btn.focus();
+  }
+  window.W97CloseStart = close;
+
+  btn.addEventListener('click', function (e) {
+    if (isOpen()) close(false);
+    // keyboard "click" (Enter/Space) lands on the first item; mouse just opens
+    else open(e.detail === 0 ? 'first' : null);
+  });
+  btn.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowUp') { e.preventDefault(); open('last'); }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); open('first'); }
+    else if (e.key === 'Escape') close(true);
+  });
+
+  menu.addEventListener('keydown', function (e) {
+    var list = items(), i = list.indexOf(e.target);
+    if (i < 0) return;
+    switch (e.key) {
+      case 'ArrowDown': e.preventDefault(); list[(i + 1) % list.length].focus(); break;
+      case 'ArrowUp': e.preventDefault(); list[(i - 1 + list.length) % list.length].focus(); break;
+      case 'Home': e.preventDefault(); list[0].focus(); break;
+      case 'End': e.preventDefault(); list[list.length - 1].focus(); break;
+      case 'Escape': e.preventDefault(); e.stopPropagation(); close(true); break;
+      case 'Tab': close(false); break;
+      default:
+        if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+          var k = e.key.toLowerCase();
+          var hit = list.filter(function (el) { var u = el.querySelector('u'); return u && u.textContent.toLowerCase() === k; })[0];
+          if (hit) { e.preventDefault(); hit.click(); }
+        }
+    }
+  });
+  // Item actions run in interactions.js (document listener); just close here.
+  menu.addEventListener('click', function (e) { if (e.target.closest('.menu__item')) close(false); });
+  menu.addEventListener('mouseover', function (e) { var it = e.target.closest('.menu__item'); if (it) it.focus({ preventScroll: true }); });
+
+  document.addEventListener('pointerdown', function (e) { if (isOpen() && !menu.contains(e.target) && !btn.contains(e.target)) close(false); });
+  window.addEventListener('blur', function () { close(false); });
+})();

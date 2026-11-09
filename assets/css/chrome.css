@@ -263,15 +263,12 @@
 
 /* Desktop / taskbar (minimize, restore, close) */
 .desktop { display: none; }
-.win-min .desktop, .win-closed .desktop, .win-restored .desktop {
-  display: block;
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background: var(--desktop);
-}
+/* The desktop is an unpositioned wrapper (body paints the teal) so the taskbar and
+   Start menu stack in the root context, above the Word window and the Assistant. */
+.win-min .desktop, .win-closed .desktop, .win-restored .desktop { display: block; }
 .win-min .app, .win-closed .app { display: none; }
-.win-restored body { background: var(--desktop); }
+.win-min body, .win-closed body, .win-restored body { background: var(--desktop); }
+.win-min .assistant, .win-closed .assistant { bottom: 42px; }
 .win-restored .app { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto 28px; box-shadow: var(--bevel-window); padding: 0 3px; }
 .win-restored .statusbar { bottom: 28px; }
 .desktop__icon {
@@ -283,13 +280,45 @@
 .desktop__icon span { padding: 1px 2px; }
 .desktop__icon:focus-visible span { background: var(--sel-bg); outline: 1px dotted #fff; }
 .taskbar {
-  position: fixed; left: 0; right: 0; bottom: 0;
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 80;
   display: flex; align-items: center; gap: 4px;
   height: 28px; padding: 2px;
   background: var(--face);
   box-shadow: inset 0 1px var(--light), inset 0 2px var(--hilite);
 }
-.taskbar__start { display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 6px 0 4px; box-shadow: var(--bevel-raised); }
+.startmenu-wrap { position: relative; display: flex; }
+.taskbar__start { display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 6px 0 4px; border: 0; background: var(--face); box-shadow: var(--bevel-raised); color: var(--text); font: 400 11px var(--ui-font); }
+.taskbar__start[aria-expanded="true"] { box-shadow: var(--bevel-pressed); padding: 1px 5px 0 5px; }
+.taskbar__start:focus-visible b { outline: 1px dotted var(--text); outline-offset: 1px; }
+
+/* Start menu */
+.startmenu { position: absolute; left: -2px; bottom: calc(100% + 3px); display: flex; padding: 2px; white-space: nowrap; }
+.startmenu[hidden] { display: none; }
+.startmenu__banner {
+  flex: none; display: flex; align-items: flex-end; justify-content: flex-end;
+  width: 21px; padding: 6px 0;
+  background: linear-gradient(to top, #000080, #1084d0);
+  color: #c0c0c0; font: 400 18px/21px Arial, sans-serif; letter-spacing: 1px;
+  writing-mode: vertical-rl; transform: rotate(180deg);
+}
+.startmenu__banner b { color: #fff; font-weight: 900; }
+.startmenu__list { margin: 0; padding: 0; list-style: none; min-width: 170px; max-width: min(300px, calc(100vw - 40px)); }
+.startmenu__item { min-height: 32px; padding: 0 12px 0 6px; gap: 8px; }
+.startmenu__doc .startmenu__item { min-height: 20px; padding-left: 10px; }
+.startmenu .menu__label { white-space: nowrap; }
+.startmenu__doc .menu__label { max-width: 220px; }
+.startmenu__icon { flex: none; }
+
+/* Shut Down: "It's now safe to turn off your computer." */
+.shutdown {
+  position: fixed; inset: 0; z-index: 2000;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px;
+  background: #000; color: #f80; cursor: default; text-align: center;
+  font: 700 clamp(20px, 4vw, 36px)/1.4 var(--ui-font);
+}
+.shutdown:focus { outline: none; }
+.shutdown p { margin: 0; }
+.shutdown small { color: #a60; font-size: 12px; font-weight: 400; }
 .taskbar__flag { width: 14px; height: 12px; background: conic-gradient(from 90deg at 50% 50%, #0a0 0 25%, #00f 0 50%, #ff0 0 75%, #f00 0); transform: skewY(-8deg); }
 .taskbar__sep { width: 2px; height: 22px; border-left: 1px solid var(--shadow); border-right: 1px solid var(--hilite); }
 .taskbar__task {

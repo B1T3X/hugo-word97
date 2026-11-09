@@ -1,11 +1,57 @@
 {{- /* Windows 98 desktop + taskbar, revealed when the Word window is minimized, restored or closed. */ -}}
+{{- $p := .page -}}
+{{- $archive := partial "w97/archive.html" $p -}}
+{{- $about := partial "w97/about.html" $p -}}
+{{- $search := partial "w97/search-page.html" $p -}}
+
+{{- $docs := slice -}}
+{{- range $i, $post := first 4 (partial "w97/posts.html" $p) -}}
+  {{- $docs = $docs | append (dict "label" (printf "&%d %s" (add $i 1) $post.Title) "href" $post.RelPermalink "icon" "word" "small" true) -}}
+{{- end -}}
+
+{{- $items := slice (dict "label" "Microsoft &Word" "action" "restore-window" "icon" "word") -}}
+{{- with $archive }}{{ $items = $items | append (dict "label" "My &Documents" "href" .RelPermalink "icon" "folder") }}{{ end -}}
+{{- if $docs }}{{ $items = $items | append (dict "sep" true) | append $docs | append (dict "sep" true) }}{{ end -}}
+{{- with $search }}{{ $items = $items | append (dict "label" "&Find" "href" .RelPermalink "icon" "find") }}{{ end -}}
+{{- with $about }}{{ $items = $items | append (dict "label" "&Help" "href" .RelPermalink "icon" "help") }}{{ end -}}
+{{- $items = $items | append
+  (dict "label" "&Run..." "action" "start-run" "icon" "open")
+  (dict "sep" true)
+  (dict "label" "Sh&ut Down..." "action" "start-shutdown" "icon" "computer")
+-}}
+
 <div class="desktop" id="desktop" aria-hidden="true">
   <button type="button" class="desktop__icon" data-action="restore-window" tabindex="-1">
     {{- partial "w97/icon.html" (dict "name" "word" "size" 32) -}}
     <span>{{ site.Params.word97.documentName | default site.Title }}.doc</span>
   </button>
   <div class="taskbar">
-    <span class="taskbar__start"><span class="taskbar__flag"></span><b>Start</b></span>
+    <div class="startmenu-wrap">
+      <button type="button" class="taskbar__start" id="start-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="start-menu" tabindex="-1"><span class="taskbar__flag"></span><b>Start</b></button>
+      <div class="startmenu window" id="start-menu" hidden>
+        <div class="startmenu__banner" aria-hidden="true"><b>Windows</b>98</div>
+        <ul class="startmenu__list" role="menu" aria-labelledby="start-btn">
+          {{- range $items }}
+          {{- if .sep }}
+          <li role="separator" class="menu__sep"></li>
+          {{- else }}
+          {{- $parts := split .label "&" }}{{ $rest := delimit (after 1 $parts) "&" }}
+          {{- $html := printf "%s<u>%s</u>%s" (index $parts 0 | htmlEscape) (substr $rest 0 1 | htmlEscape) (substr $rest 1 | htmlEscape) }}
+          <li role="none"{{ if .small }} class="startmenu__doc"{{ end }}>
+            {{- if .href }}
+            <a role="menuitem" tabindex="-1" class="menu__item startmenu__item" href="{{ .href }}">
+            {{- else }}
+            <button type="button" role="menuitem" tabindex="-1" class="menu__item startmenu__item" data-action="{{ .action }}">
+            {{- end }}
+              {{- partial "w97/icon.html" (dict "name" .icon "size" (cond (.small | default false) 16 24) "class" "startmenu__icon") -}}
+              <span class="menu__label">{{ $html | safeHTML }}</span>
+            {{- if .href }}</a>{{ else }}</button>{{ end }}
+          </li>
+          {{- end }}
+          {{- end }}
+        </ul>
+      </div>
+    </div>
     <span class="taskbar__sep"></span>
     <button type="button" class="taskbar__task" data-action="restore-window" tabindex="-1">
       {{- partial "w97/icon.html" (dict "name" "word") -}}
