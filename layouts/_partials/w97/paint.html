@@ -1,0 +1,100 @@
+{{- /* Windows 98 Paint, opened from the Start menu. Behavior lives in js/paint.js. */ -}}
+{{- $menus := slice
+  (dict "id" "file" "label" "&File" "items" (slice
+    (dict "label" "&New" "action" "paint-new")
+    (dict "label" "&Open..." "disabled" true)
+    (dict "label" "&Save" "action" "paint-save" "shortcut" "Ctrl+S")
+    (dict "sep" true)
+    (dict "label" "E&xit" "action" "paint-close")))
+  (dict "id" "edit" "label" "&Edit" "items" (slice
+    (dict "label" "&Undo" "action" "paint-undo" "shortcut" "Ctrl+Z")
+    (dict "label" "&Repeat" "action" "paint-redo" "shortcut" "Ctrl+Y")))
+  (dict "id" "image" "label" "&Image" "items" (slice
+    (dict "label" "&Invert Colors" "action" "paint-invert" "shortcut" "Ctrl+I")
+    (dict "label" "&Clear Image" "action" "paint-clear")))
+  (dict "id" "help" "label" "&Help" "items" (slice
+    (dict "label" "&Help Topics" "disabled" true)
+    (dict "sep" true)
+    (dict "label" "&About Paint" "action" "paint-about")))
+-}}
+{{- $tools := slice
+  (dict "id" "picker" "label" "Pick Color")
+  (dict "id" "fill" "label" "Fill With Color")
+  (dict "id" "pencil" "label" "Pencil")
+  (dict "id" "brush" "label" "Brush")
+  (dict "id" "airbrush" "label" "Airbrush")
+  (dict "id" "eraser" "label" "Eraser")
+  (dict "id" "line" "label" "Line")
+  (dict "id" "rect" "label" "Rectangle")
+  (dict "id" "ellipse" "label" "Ellipse")
+  (dict "id" "roundrect" "label" "Rounded Rectangle")
+-}}
+{{- $palette := slice
+  "#000000" "#808080" "#800000" "#808000" "#008000" "#008080" "#000080" "#800080" "#808040" "#004040" "#0080ff" "#004080" "#8000ff" "#804000"
+  "#ffffff" "#c0c0c0" "#ff0000" "#ffff00" "#00ff00" "#00ffff" "#0000ff" "#ff00ff" "#ffff80" "#00ff80" "#80ffff" "#8080ff" "#ff0080" "#ff8040"
+-}}
+<section class="paint window" id="paint" aria-labelledby="paint-title" hidden>
+  <div class="titlebar" data-paint-drag>
+    <span class="titlebar__icon">{{ partial "w97/icon.html" (dict "name" "paint") }}</span>
+    <h2 class="titlebar__title" id="paint-title">untitled - Paint</h2>
+    <div class="titlebar__controls">
+      <button type="button" class="tbtn" data-action="paint-minimize" aria-label="Minimize">
+        <svg width="8" height="7" viewBox="0 0 8 7" aria-hidden="true" focusable="false"><path d="M1 5h6v2H1z"/></svg>
+      </button>
+      <button type="button" class="tbtn tbtn--close" data-action="paint-close" aria-label="Close">
+        <svg width="8" height="7" viewBox="0 0 8 7" aria-hidden="true" focusable="false"><path d="M0 0h2v1h1v1h2V1h1V0h2v1H7v1H6v1H5v1h1v1h1v1h1v1H6V6H5V5H3v1H2v1H0V6h1V5h1V4h1V3H2V2H1V1H0z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <nav class="menubar-wrap" aria-label="Paint menu">
+    <ul class="menubar" role="menubar" aria-label="Paint menu bar" id="paint-menubar">
+      {{- range $i, $m := $menus }}
+      {{- $parts := split $m.label "&" }}{{ $rest := index $parts 1 }}
+      <li role="none" class="menubar__item">
+        <button type="button" role="menuitem" class="menubar__btn" id="paint-menu-{{ $m.id }}" aria-haspopup="menu" aria-expanded="false" aria-controls="paint-menu-{{ $m.id }}-list" tabindex="{{ if eq $i 0 }}0{{ else }}-1{{ end }}">
+          {{- index $parts 0 }}<u>{{ substr $rest 0 1 }}</u>{{ substr $rest 1 -}}
+        </button>
+        <ul class="menu window" role="menu" id="paint-menu-{{ $m.id }}-list" aria-labelledby="paint-menu-{{ $m.id }}" hidden>
+          {{- range $m.items }}
+          {{ partial "w97/menu-item.html" . }}
+          {{- end }}
+        </ul>
+      </li>
+      {{- end }}
+    </ul>
+  </nav>
+
+  <div class="paint__body">
+    <div class="paint__side">
+      <div class="paint__tools" role="toolbar" aria-label="Tools" aria-orientation="vertical">
+        {{- range $tools }}
+        <button type="button" class="paint__tool" data-tool="{{ .id }}" aria-label="{{ .label }}" aria-pressed="false" data-tip="{{ .label }}">
+          {{- partial "w97/icon.html" (dict "name" (printf "t-%s" .id)) -}}
+        </button>
+        {{- end }}
+      </div>
+      <div class="paint__options" id="paint-options" role="group" aria-label="Tool options"></div>
+    </div>
+    <div class="paint__wrap" id="paint-wrap">
+      <canvas class="paint__canvas" id="paint-canvas" width="320" height="240" tabindex="0" role="img" aria-label="Drawing canvas"></canvas>
+    </div>
+  </div>
+
+  <div class="paint__colors">
+    <div class="paint__current" aria-hidden="true">
+      <span class="paint__bg" id="paint-bg"></span>
+      <span class="paint__fg" id="paint-fg"></span>
+    </div>
+    <div class="paint__palette" role="group" aria-label="Colors (click: foreground, right-click: background)">
+      {{- range $palette }}
+      <button type="button" class="paint__swatch" data-color="{{ . }}" style="background:{{ . | safeCSS }}" aria-label="Color {{ . }}"></button>
+      {{- end }}
+    </div>
+  </div>
+
+  <div class="paint__status">
+    <span class="sb-cell sb-cell--fill paint__hint">For Help, click Help Topics on the Help Menu.</span>
+    <span class="sb-cell paint__pos" id="paint-pos"></span>
+  </div>
+</section>

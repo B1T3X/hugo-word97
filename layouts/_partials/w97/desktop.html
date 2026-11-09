@@ -3,6 +3,7 @@
 {{- $archive := partial "w97/archive.html" $p -}}
 {{- $about := partial "w97/about.html" $p -}}
 {{- $search := partial "w97/search-page.html" $p -}}
+{{- $paint := ne site.Params.word97.paint false -}}
 
 {{- $docs := slice -}}
 {{- range $i, $post := first 4 (partial "w97/posts.html" $p) -}}
@@ -10,6 +11,7 @@
 {{- end -}}
 
 {{- $items := slice (dict "label" "Microsoft &Word" "action" "restore-window" "icon" "word") -}}
+{{- if $paint }}{{ $items = $items | append (dict "label" "&Paint" "action" "start-paint" "icon" "paint") }}{{ end -}}
 {{- with $archive }}{{ $items = $items | append (dict "label" "My &Documents" "href" .RelPermalink "icon" "folder") }}{{ end -}}
 {{- if $docs }}{{ $items = $items | append (dict "sep" true) | append $docs | append (dict "sep" true) }}{{ end -}}
 {{- with $search }}{{ $items = $items | append (dict "label" "&Find" "href" .RelPermalink "icon" "find") }}{{ end -}}
@@ -57,6 +59,13 @@
       {{- partial "w97/icon.html" (dict "name" "word") -}}
       <span>{{ .title }} - Microsoft Word</span>
     </button>
+    {{- if $paint }}
+    <button type="button" class="taskbar__task" id="paint-task" data-action="paint-task" aria-pressed="false" tabindex="-1" hidden>
+      {{- partial "w97/icon.html" (dict "name" "paint") -}}
+      <span>untitled - Paint</span>
+    </button>
+    {{- end }}
     <span class="taskbar__tray"><time class="taskbar__clock" id="taskbar-clock"></time></span>
   </div>
+  {{- if $paint }}{{ partial "w97/paint.html" . }}{{ end }}
 </div>

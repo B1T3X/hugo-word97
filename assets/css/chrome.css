@@ -330,8 +330,9 @@
   text-align: left; overflow: hidden;
 }
 .taskbar__task span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.win-restored .taskbar__task { box-shadow: var(--bevel-pressed); font-weight: 700; background-image: repeating-conic-gradient(var(--hilite) 0 25%, var(--face) 0 50%); background-size: 2px 2px; }
-.win-closed .taskbar__task { display: none; }
+.taskbar__task[hidden] { display: none; }
+.win-restored .taskbar__task[data-action="restore-window"], .taskbar__task[aria-pressed="true"] { box-shadow: var(--bevel-pressed); font-weight: 700; background-image: repeating-conic-gradient(var(--hilite) 0 25%, var(--face) 0 50%); background-size: 2px 2px; }
+.win-closed .taskbar__task[data-action="restore-window"] { display: none; }
 .taskbar__tray { margin-left: auto; display: inline-flex; align-items: center; height: 22px; padding: 0 10px; box-shadow: var(--bevel-thin-down); }
 
 /* Full screen: Word 97's floating "Close Full Screen" toolbar */

@@ -91,6 +91,7 @@ title = "Jane Doe"
     latestStyle = "blue"
     defaultTheme = "auto"              # "auto" (follow the OS), "light" or "dark"
     accessibilityOptions = true        # built-in a11y dialog; false if you use a third-party widget
+    paint = true                       # Start > Paint on the desktop; false to leave it out
     footerLinks = [{ name = "Privacy", url = "/privacy/" }]
 
     [params.word97.cookieNotice]       # off by default

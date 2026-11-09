@@ -54,6 +54,7 @@
       (resources.Get "js/search.js")
       (resources.Get "js/scrollbar.js")
       (resources.Get "js/assistant.js")
+      (resources.Get "js/paint.js")
     | resources.Concat "js/word97.js" }}
   {{- if not hugo.IsServer }}{{ $js = $js | minify | fingerprint }}{{ end }}
   <script src="{{ $js.RelPermalink }}"{{ with $js.Data.Integrity }} integrity="{{ . }}"{{ end }} defer></script>
